@@ -1,0 +1,13 @@
+trim colour
+
+trim and text colour should be set like master........
+
+add a scalar for setting secondary colours
+
+trim is default False, but can be True or 'focus', 'state'
+
+show_trim is turned on or off on state/focus
+
+if trim is false then the outer layer is just set secondary
+
+if trim is state, or focus, then
