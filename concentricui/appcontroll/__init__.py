@@ -1,1 +1,1 @@
-from .appcontroll import *
+from .appcontroll import appcontroll
