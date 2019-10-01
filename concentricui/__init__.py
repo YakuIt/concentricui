@@ -1,4 +1,4 @@
-from .appcontroll import *
+from .appcontroll import appcontroll
 from .behaviours import *
 from .circle import *
 from .colourscheme import *
