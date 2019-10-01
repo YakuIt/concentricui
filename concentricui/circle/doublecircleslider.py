@@ -1,16 +1,15 @@
 """ Some notes go here """
 
-all__ = ('DoubleCircleSlider', )
+all__ = ('DoubleCircleSlider',)
 
-from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from kivy.properties import BooleanProperty, NumericProperty, ObjectProperty, ReferenceListProperty
 
-from concentricui.circle.circleslider import CircleSlider
-
 from concentricui.behaviours.concentricshapes import ConcentricShapes
+from concentricui.circle.circleslider import CircleSlider
+from concentricui.oblong.concentricoblongs import ConcentricOblongs
+
 
 class DoubleCircleSlider(ConcentricShapes):
-
     integers = BooleanProperty(False)
 
     #  not sure how implemented this is
@@ -62,7 +61,6 @@ class DoubleCircleSlider(ConcentricShapes):
         # self.shape_size_hint_list = kwargs.pop('shape_size_hint_list')
         # self.master_colour = kwargs.pop('master_colour')
 
-
         self.cursor_size = 0, 0
         self.sensitivity = 'handle'
 
@@ -73,7 +71,7 @@ class DoubleCircleSlider(ConcentricShapes):
                       'max': self.max,
                       'padding': self.padding,
                       'orientation': self.orientation,
-                      #'range': self.range,
+                      # 'range': self.range,
                       'step': self.step,
                       'sensitivity': 'handle',
                       'pos': self.pos,
@@ -93,7 +91,7 @@ class DoubleCircleSlider(ConcentricShapes):
                       'max': self.max,
                       'padding': self.padding,
                       'orientation': self.orientation,
-                      #'range': self.range,
+                      # 'range': self.range,
                       'step': self.step,
                       'sensitivity': 'handle',
                       'pos': self.pos,
@@ -109,12 +107,13 @@ class DoubleCircleSlider(ConcentricShapes):
         if self.slider_bar_toggle:
             """ you can change do shape_dictionary=self.shape_dictionary if you want this little bar to be concentric
                 but im pretty sure it looks awful so im not even going to provide an option for that """
-            self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation, master_colour=self.master_colour, colour_scheme=self.colour_scheme)
+            self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation,
+                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme)
             self.add_widget(self.slider_bar)
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)
 
-            #self.bind(master_colour=self.set_slider_bar_colour)
+            # self.bind(master_colour=self.set_slider_bar_colour)
 
         self.min_slider = CircleSlider(**min_kwargs)
         self.max_slider = CircleSlider(**max_kwargs)
@@ -146,7 +145,7 @@ class DoubleCircleSlider(ConcentricShapes):
         if self.slider_bar:
             self.slider_bar.size = (self.width - self.min_slider.circle_label.get_inner_shape_width(),
                                     self.height / 10) if self.orientation == 'horizontal' else (
-            self.width / 10, self.height - self.min_slider.circle_label.get_inner_shape_height())
+                self.width / 10, self.height - self.min_slider.circle_label.get_inner_shape_height())
             self.slider_bar.center = self.center
 
         self.min_slider.size = self.size
@@ -190,7 +189,7 @@ class DoubleCircleSlider(ConcentricShapes):
 
         touch.grab(self.closer_widget)
 
-        #print(':)', self.master_colour, self._master_colour, self.pseudo_bind_master_colour_attribute)
+        # print(':)', self.master_colour, self._master_colour, self.pseudo_bind_master_colour_attribute)
 
         return True
 

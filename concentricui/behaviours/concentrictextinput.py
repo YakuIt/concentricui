@@ -2,35 +2,27 @@
 
 #  fixme - need to do something with the cursor position
 
-all__ = ('ConcentricButton', )
+all__ = ('ConcentricButton',)
 
+from kivy.clock import Clock
+from kivy.graphics import Color
+from kivy.properties import ObjectProperty, ListProperty, VariableListProperty, BooleanProperty
 from kivy.uix.textinput import TextInputCutCopyPaste, TextInput
 
 from concentricui.behaviours.concentricshapes import ConcentricShapes
-from concentricui.behaviours.concentricfontscaling import ConcentricFontScaling
-
 from concentricui.roundedrectangle.roundedrectangle import RoundedRec as RoundedRectangle
-from concentricui.circle.circlelabel import CircleLabel
 
-from kivy.clock import Clock
-
-from kivy.graphics import Color, Rectangle
-
-from kivy.properties import ObjectProperty, ListProperty, VariableListProperty, BooleanProperty, AliasProperty
-
-from kivy.cache import Cache
 
 class RoundedRectangleTextInputCutCopyPaste(TextInputCutCopyPaste):
     def __init__(self, **kwargs):
         super(RoundedRectangleTextInputCutCopyPaste, self).__init__(**kwargs)
 
 
-
 from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from concentricui.oblong.oblong import Oblong
 
-class OblongCursor(ConcentricOblongs):
 
+class OblongCursor(ConcentricOblongs):
     """ make use of TextInput.cursor_pos """
 
     def __init__(self, **kwargs):
@@ -43,16 +35,14 @@ class OblongCursor(ConcentricOblongs):
 
 
 from kivy.uix import textinput
+
 textinput.TextInputCutCopyPaste = RoundedRectangleTextInputCutCopyPaste
 
-class ConcentricTextInput(ConcentricShapes, TextInput):
 
-    #keyboard_mode = 'auto'
+class ConcentricTextInput(ConcentricShapes, TextInput):
+    # keyboard_mode = 'auto'
 
     do_padding = ObjectProperty('test')
-
-
-
 
     def update(self, *args):
         pass
@@ -68,7 +58,7 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
         label_width_list = [x[0] for x in label_size_list]
         label_height_list = [x[1] for x in label_size_list]
 
-        if not(len(list(label_width_list)) and len(list(label_height_list))):
+        if not (len(list(label_width_list)) and len(list(label_height_list))):
             return None
 
         max_texture_width = max(label_width_list)
@@ -76,16 +66,12 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
 
         return max_texture_width, total_texture_height
 
-
-
     # def set_texture_size(self, value):
     #     self.set_oblong_cursor_pos()
     #     self.texture_size = value
-        #raise Exception('certainly not yet implemented')
+    # raise Exception('certainly not yet implemented')
 
-
-    #texture_size = AliasProperty(get_texture_size, set_texture_size, bind=['padding'])
-
+    # texture_size = AliasProperty(get_texture_size, set_texture_size, bind=['padding'])
 
     texture_size = ListProperty()
 
@@ -103,7 +89,7 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
 
         self.font_size = self.inner_height
 
-        self.padding_y = (self.font_size-self.height)/2 + self.font_size
+        self.padding_y = (self.font_size - self.height) / 2 + self.font_size
         self.padding_y = 0
 
         self.oblong_cursor.set_size((self.cursor_width, self.font_size))
@@ -131,8 +117,6 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
         # self.font_size = font_size
         # self._trigger_refresh_text()
 
-
-
     # def on_text(self, wid, text):
     #
     #     if self.text:
@@ -142,7 +126,6 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
     #
     #     print(':))', self.text_colour, self.foreground_color)
 
-
     # def texture_size_callback(self, *args):
     #
     #     self.texture_size = self.get_texture_size()
@@ -151,7 +134,7 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
     def update_padding(self, *args):
         return
         if not self.text:
-            self.padding = self.width/2, self.center_y/2
+            self.padding = self.width / 2, self.center_y / 2
             return
 
         text_width = self._get_text_width(
@@ -160,13 +143,13 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
             self._label_cached
         )
 
-        padding_y = self.y/2
-        inner_width = self.get_inner_width_at_y(self.center_y + self.font_size/2)
+        padding_y = self.y / 2
+        inner_width = self.get_inner_width_at_y(self.center_y + self.font_size / 2)
 
         padding_x_when_text_box_not_filled = (self.width - text_width) / 2
-        #padding_x_when_text_box_is_filled = (self.width - inner_width) / 2
+        # padding_x_when_text_box_is_filled = (self.width - inner_width) / 2
         padding_x_when_text_box_is_filled = self.inner_x - self.x if self.inner_x else self.x
-        #padding_x = min(abs(padding_x_when_text_box_not_filled), abs(padding_x_when_text_box_is_filled))
+        # padding_x = min(abs(padding_x_when_text_box_not_filled), abs(padding_x_when_text_box_is_filled))
 
         if not inner_width:
             return
@@ -184,16 +167,12 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
         else:
             self.padding = padding_x, padding_y
 
-
-
-
     def update_hint_padding(self, *args):
 
         if not self.inner_x:
             return
 
-        self.padding = self.inner_x, (self.height - self.font_size)/2
-
+        self.padding = self.inner_x, (self.height - self.font_size) / 2
 
     def clear_input(self):
         self.text = ""
@@ -201,7 +180,7 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
     def on_size(self, instance, value):
         super(ConcentricTextInput, self).on_size(instance, value)
         Clock.schedule_once(self.set_font_size, -1)
-        #Clock.schedule_once(self.update_padding)
+        # Clock.schedule_once(self.update_padding)
 
     # def set_focus(self, focus):
     #     self.toggle_focus = focus
@@ -213,10 +192,9 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
 
     scale_text = BooleanProperty(True)
 
-
     def set_oblong_cursor_pos(self, *args):
         if self.oblong_cursor:
-            self.oblong_cursor.set_pos((self.cursor_pos[0], self.cursor_pos[1]-self.oblong_cursor.size[1]))
+            self.oblong_cursor.set_pos((self.cursor_pos[0], self.cursor_pos[1] - self.oblong_cursor.size[1]))
 
     def set_oblong_cursor_size(self, *args):
         if self.oblong_cursor and len(self.texture_size) == 2:
@@ -227,21 +205,20 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
         if self.oblong_cursor:
             self.oblong_cursor_colour_instruction.rgba = self.cursor_color
 
-    cursor_color = ListProperty([1,1,1,0.5])
-    selection_color = ListProperty([1,1,1,0.5])
+    cursor_color = ListProperty([1, 1, 1, 0.5])
+    selection_color = ListProperty([1, 1, 1, 0.5])
 
     def __init__(self, **kwargs):
-        self.background_color = [0,0,0,0]
+        self.background_color = [0, 0, 0, 0]
         self.background_normal = ''
         self.background_down = ''
         self.background_disabled_normal = ''
         self.background_disabled_down = ''
 
-
-        #self.foreground_color = (0,1,0,1)
+        # self.foreground_color = (0,1,0,1)
 
         self.multiline = False
-        self.padding = [0,0,0,0]
+        self.padding = [0, 0, 0, 0]
 
         self.halign = 'center'
         self.valign = 'center'
@@ -260,8 +237,8 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
             self.oblong_cursor = Oblong(size=(self.cursor_width, self.font_size), orientation='vertical')
 
         self.bind(cursor_pos=self.set_oblong_cursor_pos)
-        #self.bind(size=self.set_oblong_cursor_size)
-        #self.bind(texture_size=self.set_oblong_cursor_size)
+        # self.bind(size=self.set_oblong_cursor_size)
+        # self.bind(texture_size=self.set_oblong_cursor_size)
         self.bind(cursor_color=self.set_oblong_cursor_colour)
 
         with self.canvas.before:
@@ -282,14 +259,13 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
             if self._cursor_blink:
                 self._cursor_blink = False
 
-
     def _draw_selection(self, *largs):
 
         """" The one change is changing rectangle to rounded rectangle on the lastish line """
 
-        pos, size, line_num, (s1c, s1r), (s2c, s2r),\
-            _lines, _get_text_width, tab_width, _label_cached, width,\
-            padding_left, padding_right, x, canvas_add, selection_color = largs
+        pos, size, line_num, (s1c, s1r), (s2c, s2r), \
+        _lines, _get_text_width, tab_width, _label_cached, width, \
+        padding_left, padding_right, x, canvas_add, selection_color = largs
         # Draw the current selection on the widget.
         if line_num < s1r or line_num > s2r:
             return
@@ -322,7 +298,6 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
     def on_text_colour(self, wid, colour):
         self.text_colour_instruction.rgba = colour
         self.foreground_color = self.text_colour
-
 
     def on_focus(self, wid, focus):
         #  simple enough

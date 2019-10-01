@@ -1,21 +1,15 @@
-
-
 from kivy.properties import BooleanProperty, NumericProperty, ReferenceListProperty
+from kivy.uix.label import Label
 
 from concentricui.behaviours.concentricfontscaling import ConcentricFontScaling
 
-from kivy.uix.label import Label
-
-from concentricui.colourscheme.colourwidget import ColourProperties
 
 class ConcentricLabel(Label, ConcentricFontScaling):
-
     scale_text = BooleanProperty(True)
     inner_width, inner_height = NumericProperty(), NumericProperty()
     inner_size = ReferenceListProperty(inner_width, inner_height)
 
     def update(self, *args):
-
         print('self.text_colour!!!!!!!!', self, self.text_colour)
 
         self.texture_update()

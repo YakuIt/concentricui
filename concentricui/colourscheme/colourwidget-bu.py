@@ -1,13 +1,13 @@
 """ This is the base for all concentric ui widgets """
 
+from functools import partial
+
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.utils import rgba
-from kivy.uix.widget import Widget
+from kivy.properties import AliasProperty, StringProperty, ColorProperty, BooleanProperty
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty, AliasProperty, StringProperty, ListProperty, ColorProperty, BooleanProperty
-
-from functools import partial
+from kivy.uix.widget import Widget
+from kivy.utils import rgba
 
 
 class ColourProperties(object):
@@ -23,16 +23,14 @@ class ColourProperties(object):
 
         print('get_master_colour to {} @ {}'.format(self._master_colour, self))
 
-
         """ I could also get it from the shape list, in concentric shapes.
             and for some other widgets this could be self.background_color or even maybe self.color """
 
-        #self.do_colour_update()
+        # self.do_colour_update()
 
         return self._master_colour
 
     def set_master_colour(self, value):
-
 
         """ This function is 'continued' in concentricshapes """
 
@@ -79,14 +77,12 @@ class ColourProperties(object):
             self.pass_master_colour_to_children(wid, value)
 
 
-
 class ColourWidget(Widget, ColourProperties):
     pass
 
     #  screen shall be the default, but i shall make it be overridden by master colour, or a manual colour list
     colour_scheme = StringProperty()
     use_master_colour = StringProperty()
-
 
     needs_trim_colour = BooleanProperty(False)
     needs_text_colour = BooleanProperty(False)
@@ -97,9 +93,7 @@ class ColourWidget(Widget, ColourProperties):
 
         Clock.schedule_once(self.do_colour_scheme)
 
-
     def do_colour_scheme(self, *args):
-
 
         if self.colour_scheme == 'master':
             pass
@@ -118,7 +112,6 @@ class ColourWidget(Widget, ColourProperties):
             self.set_colours_from_widget(widget=widget)
 
         self.set_master_colour(self.master_colour)
-
 
     def get_previous(self, *args):
 
@@ -168,6 +161,7 @@ class ColourWidget(Widget, ColourProperties):
                   )
 
     """ the bellow function could use a list of widgets to apply the scheme to """
+
     def pass_master_colour_to_children(self, wid, colour):
         """ this function is expanded on in subclasses of colourwidget """
         pass

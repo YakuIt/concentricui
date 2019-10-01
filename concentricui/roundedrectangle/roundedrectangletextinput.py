@@ -1,9 +1,10 @@
 """ Some notes go here """
 
-all__ = ('RoundedRectangleTextInput', )
+all__ = ('RoundedRectangleTextInput',)
 
-from concentricui.roundedrectangle.concentricroundedrectangles import ConcentricRoundedRectangles
 from concentricui.behaviours.concentrictextinput import ConcentricTextInput
+from concentricui.roundedrectangle.concentricroundedrectangles import ConcentricRoundedRectangles
+
 
 class RoundedRectangleTextInput(ConcentricTextInput, ConcentricRoundedRectangles):
 

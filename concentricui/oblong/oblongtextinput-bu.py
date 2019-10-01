@@ -1,9 +1,10 @@
 """ Some notes go here """
 
-all__ = ('OblongTextInput', )
+all__ = ('OblongTextInput',)
 
-from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from concentricui.behaviours.concentrictextinput import ConcentricTextInput
+from concentricui.oblong.concentricoblongs import ConcentricOblongs
+
 
 class OblongTextInput(ConcentricOblongs, ConcentricTextInput):
 

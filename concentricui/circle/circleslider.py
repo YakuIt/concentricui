@@ -1,17 +1,19 @@
 """ Some notes go here """
 
-all__ = ('CircleSlider', )
+all__ = ('CircleSlider',)
+
+from functools import partial
 
 from kivy.clock import Clock
 from kivy.properties import NumericProperty, BooleanProperty, ObjectProperty
 from kivy.uix.slider import Slider
-from concentricui.circle.concentriccircles import ConcentricCircles
+
 from concentricui.circle.circlelabel import CircleLabel
+from concentricui.circle.concentriccircles import ConcentricCircles
 from concentricui.oblong.concentricoblongs import ConcentricOblongs
-from functools import partial
+
 
 class CircleSlider(Slider, ConcentricCircles):
-
     draw_shape_toggle = BooleanProperty(False)
 
     circle_label = ObjectProperty()
@@ -36,7 +38,7 @@ class CircleSlider(Slider, ConcentricCircles):
 
         super(CircleSlider, self).__init__(**kwargs)
         self.value = kwargs.pop('value')
-        #self.sensitivity = kwargs.pop('sensitivity')
+        # self.sensitivity = kwargs.pop('sensitivity')
 
         #  disable all the slider's old images
         self.cursor_image = ''
@@ -50,16 +52,21 @@ class CircleSlider(Slider, ConcentricCircles):
         self.background_width = 0
 
         if self.slider_bar_toggle:
-            self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation, shape_size_hint_list=[1], master_colour=self.master_colour)
+            self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation,
+                                                shape_size_hint_list=[1], master_colour=self.master_colour)
             self.add_widget(self.slider_bar)
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)
 
         self.font_size_hint = 0.5
         value_text = str(int(self.value))
-        self.circle_label = CircleLabel(text=value_text,font_size_hint=self.font_size_hint,text_colour=self.text_colour,bold=True,size=self.size, pos=self.pos, shape_dictionary=self.shape_dictionary, colour_scheme=self.colour_scheme, master_colour=self.master_colour)
+        self.circle_label = CircleLabel(text=value_text, font_size_hint=self.font_size_hint,
+                                        text_colour=self.text_colour, bold=True, size=self.size, pos=self.pos,
+                                        shape_dictionary=self.shape_dictionary, colour_scheme=self.colour_scheme,
+                                        master_colour=self.master_colour)
 
-        print('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii', self.text_colour)
+        print('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
+              self.text_colour)
 
         self.add_widget(self.circle_label)
         if self.display_value_toggle:
@@ -70,11 +77,9 @@ class CircleSlider(Slider, ConcentricCircles):
         self.bind(center=self.update_shape_list_pos)
         self.bind(value_pos=self.update_shape_list_pos)
 
-
     def set_cursor_text(self, *args):
         #  fixme - could use some cursor text formatting. eg decimal places/sig fig
         self.circle_label.text = str(int(self.value))
-
 
     # def on_text_colour(self, wid, colour):
     #     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', colour)
@@ -90,7 +95,9 @@ class CircleSlider(Slider, ConcentricCircles):
 
     def set_slider_bar_size_and_pos(self, *args):
         if self.slider_bar:
-            self.slider_bar.size = (self.width - self.circle_label.get_inner_shape_width(), self.height/10) if self.orientation == 'horizontal' else (self.width/10, self.height - self.circle_label.get_inner_shape_height())
+            self.slider_bar.size = (self.width - self.circle_label.get_inner_shape_width(),
+                                    self.height / 10) if self.orientation == 'horizontal' else (
+                self.width / 10, self.height - self.circle_label.get_inner_shape_height())
             self.slider_bar.center = self.center
 
     def set_slider_bar_colour(self, wid, colour):
@@ -104,11 +111,9 @@ class CircleSlider(Slider, ConcentricCircles):
         print('got here!!!!!!!!!!!!!!!')
         self.set_slider_bar_colour(wid, colour)
 
-
     def update_shape_list_size(self, *args):
-        #self.circle_label.diamter = min(self.size)
+        # self.circle_label.diamter = min(self.size)
         super(CircleSlider, self).update_shape_list_size()
-
 
     def update_shape_list_pos(self, *args):
 

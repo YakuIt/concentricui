@@ -1,17 +1,14 @@
 """ Some notes go here """
 
-all__ = ('OblongTextInput', )
+all__ = ('OblongTextInput',)
 
-
-from kivy.properties import ObjectProperty
-
-from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from concentricui.behaviours.concentrictextinput import ConcentricTextInput
-from kivy.uix.textinput import TextInput
+from concentricui.oblong.concentricoblongs import ConcentricOblongs
+
 
 class OblongTextInput(ConcentricOblongs, ConcentricTextInput):
 
-    #colour_instruction_list = ObjectProperty()
+    # colour_instruction_list = ObjectProperty()
 
     # def on_text(self, wid, text):
     #
@@ -21,16 +18,16 @@ class OblongTextInput(ConcentricOblongs, ConcentricTextInput):
     def __init__(self, **kwargs):
         super(OblongTextInput, self).__init__(**kwargs)
 
-        #self.add_widget(ConcentricTextInput(**kwargs))
-        #self.text_input = ConcentricTextInput(draw_shape_toggle=False)
-        #self.content_pin = ConcentricTextInput(do_padding='test')
+        # self.add_widget(ConcentricTextInput(**kwargs))
+        # self.text_input = ConcentricTextInput(draw_shape_toggle=False)
+        # self.content_pin = ConcentricTextInput(do_padding='test')
 
-        #self.colour_instruction_list = self.content_pin.colour_instruction_list
+        # self.colour_instruction_list = self.content_pin.colour_instruction_list
 
         # self.bind(size=self.set_text_input_size)
         # self.bind(pos=self.set_text_input_pos)
 
-        #self.bind(inner_size=self.set_text_input_inner_dimensions)
+        # self.bind(inner_size=self.set_text_input_inner_dimensions)
 
         # self.text_input.bind(text=self.set_text_input_size)
         # self.text_input.bind(text=self.set_text_input_pos)

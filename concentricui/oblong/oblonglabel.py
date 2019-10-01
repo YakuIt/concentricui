@@ -1,9 +1,10 @@
 """ Some notes go here """
 
-all__ = ('OblongLabel', )
+all__ = ('OblongLabel',)
 
-from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from concentricui.behaviours.concentriclabel import ConcentricLabel
+from concentricui.oblong.concentricoblongs import ConcentricOblongs
+
 
 class OblongLabel(ConcentricOblongs, ConcentricLabel):
 

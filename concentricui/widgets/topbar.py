@@ -1,21 +1,13 @@
-all__ = ('TopBar', )
-
-from concentricui.widgets.screenchangespinner import ScreenChangeSpinner
-from concentricui.oblong.concentricoblongs import ConcentricOblongs
+all__ = ('TopBar',)
 
 from kivy.app import App
 from kivy.graphics import Color, Rectangle
-
 from kivy.uix.boxlayout import BoxLayout
 
-from kivy.uix.button import Button
-
-from concentricui.widgets.textbutton import TextButton
-
-from concentricui.colourscheme.colourwidget import ColourWidget
-
 from concentricui.appcontroll.appcontroll import minimise_app, close_app
-
+from concentricui.oblong.concentricoblongs import ConcentricOblongs
+from concentricui.widgets.screenchangespinner import ScreenChangeSpinner
+from concentricui.widgets.textbutton import TextButton
 
 
 class TopBarShape(ConcentricOblongs):
@@ -30,18 +22,17 @@ class TopBarShape(ConcentricOblongs):
 
         self.bind(size=self.set_rectangle_size, pos=self.set_rectangle_pos, trim_colour=self.set_rectangle_colour)
 
-
     def set_rectangle_size(self, wid, size):
-        self.rectangle.size = size[0], size[1]/2
+        self.rectangle.size = size[0], size[1] / 2
         self.set_rectangle_pos(wid, self.pos)
 
     def set_rectangle_pos(self, wid, pos):
-        self.rectangle.pos = pos[0], pos[1] + self.size[1]/2
+        self.rectangle.pos = pos[0], pos[1] + self.size[1] / 2
 
     def set_rectangle_colour(self, wid, colour):
-
         if self.rectangle_colour_instruction:
             self.rectangle_colour_instruction.rgba = colour
+
 
 class TopBar(TopBarShape):
 
@@ -50,7 +41,7 @@ class TopBar(TopBarShape):
         super(TopBar, self).__init__(**kwargs)
 
         self.allow_concentric = False
-        #self.colour_scheme = 'screen'
+        # self.colour_scheme = 'screen'
 
         box_layout = BoxLayout(size=self.size,
                                orientation='horizontal')
@@ -59,14 +50,18 @@ class TopBar(TopBarShape):
         close_button = TextButton(text='x',
                                   on_release=close_app)
         minimise_button = TextButton(text='-',
-                                  on_release=minimise_app)
+                                     on_release=minimise_app)
         window_buttons_box.add_widget(close_button)
         window_buttons_box.add_widget(minimise_button)
 
         box_layout.add_widget(window_buttons_box)
 
         #  screen change spinner
-        self.screen_change_spinner = ScreenChangeSpinner(shape_size_hint_list=[0.9, 1], colour_scheme=self.colour_scheme, master_colour=self.master_colour, sync_height=100, font_ratio=0.7, option_cls_kwargs={'shape_size_hint_list':[0.8, 1]})
+        self.screen_change_spinner = ScreenChangeSpinner(shape_size_hint_list=[0.9, 1],
+                                                         colour_scheme=self.colour_scheme,
+                                                         master_colour=self.master_colour, sync_height=100,
+                                                         font_ratio=0.7,
+                                                         option_cls_kwargs={'shape_size_hint_list': [0.8, 1]})
         box_layout.add_widget(self.screen_change_spinner)
 
         #
@@ -79,7 +74,6 @@ class TopBar(TopBarShape):
         if self.screen_change_spinner:
             self.screen_change_spinner.master_colour = self.master_colour
         self.set_rectangle_colour(wid, colour)
-
 
     def open_settings(self, *args):
         App.get_running_app().open_settings()

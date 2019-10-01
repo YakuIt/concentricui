@@ -1,9 +1,10 @@
 """ Some notes go here """
 
-all__ = ('CircleLabel', )
+all__ = ('CircleLabel',)
 
-from concentricui.circle.concentriccircles import ConcentricCircles
 from concentricui.behaviours.concentriclabel import ConcentricLabel
+from concentricui.circle.concentriccircles import ConcentricCircles
+
 
 class CircleLabel(ConcentricCircles, ConcentricLabel):
 
@@ -11,6 +12,4 @@ class CircleLabel(ConcentricCircles, ConcentricLabel):
         super(CircleLabel, self).__init__(**kwargs)
 
     def on_size(self, wid, size):
-
         print('dododoodododod!!!!!', self.master_colour)
-

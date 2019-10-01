@@ -1,9 +1,10 @@
 """ Some notes go here """
 
-all__ = ('CircleTextInput', )
+all__ = ('CircleTextInput',)
 
-from concentricui.circle.concentriccircles import ConcentricCircles
 from concentricui.behaviours.concentrictextinput import ConcentricTextInput
+from concentricui.circle.concentriccircles import ConcentricCircles
+
 
 class CircleTextInput(ConcentricTextInput, ConcentricCircles):
 

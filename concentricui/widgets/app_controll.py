@@ -1,14 +1,16 @@
-from kivy.utils import platform
-from kivy.core.window import Window
 from kivy.app import App
+from kivy.core.window import Window
+from kivy.utils import platform
 
 if platform == 'android':
     from jnius import autoclass, cast
+
 
 def close_app(self):
     App.get_running_app().stop()
     if platform is not 'android':
         Window.close()
+
 
 def minimise_app(self):
     if platform is 'android':

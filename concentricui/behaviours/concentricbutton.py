@@ -1,11 +1,11 @@
 """ Some notes go here """
 
-all__ = ('ConcentricButton', )
+all__ = ('ConcentricButton',)
 
-from concentricui.behaviours.concentriclabel import ConcentricLabel
 from kivy.uix.button import ButtonBehavior
 
-from kivy.properties import ListProperty
+from concentricui.behaviours.concentriclabel import ConcentricLabel
+
 
 class ConcentricButton(ButtonBehavior, ConcentricLabel):
 
@@ -30,7 +30,6 @@ class ConcentricButton(ButtonBehavior, ConcentricLabel):
     # def on_release(self, *args):
     #     print('rororororopornr', self.state)
 
-
     def on_state(self, *args):
 
         if self.state == 'down':
@@ -40,8 +39,7 @@ class ConcentricButton(ButtonBehavior, ConcentricLabel):
             self.show_trim = False
             print('self.state = False')
 
-        #super(ConcentricButton, self).on_state(*args)
-
+        # super(ConcentricButton, self).on_state(*args)
 
     def __init__(self, **kwargs):
 
@@ -55,4 +53,4 @@ class ConcentricButton(ButtonBehavior, ConcentricLabel):
         self.background_disabled_normal = None
         self.background_disabled_down = None
 
-        #self.bind(state=self.set_trim)
+        # self.bind(state=self.set_trim)

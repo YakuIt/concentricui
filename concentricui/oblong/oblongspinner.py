@@ -1,21 +1,15 @@
 """ Some notes go here """
 
-all__ = ('OblongSpinner', )
+all__ = ('OblongSpinner',)
 
 from kivy.compat import string_types
 from kivy.factory import Factory
-
-from kivy.clock import Clock
-
-from kivy.properties import NumericProperty, ListProperty, DictProperty, ObjectProperty
-
-from concentricui.oblong.concentricoblongs import ConcentricOblongs as OblongItem
-
-from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.properties import NumericProperty, DictProperty, ObjectProperty
+from kivy.uix.spinner import Spinner
 
 from concentricui.oblong.concentricoblongs import ConcentricOblongs
 from concentricui.oblong.oblongbutton import OblongButton
-from concentricui.roundedrectangle.roundedrectangledropdown import RoundedRectangleDropdown
+
 
 class OblongSpinnerButton(OblongButton):
     def __init__(self, **kwargs):
@@ -27,12 +21,11 @@ class OblongSpinnerButton(OblongButton):
     # def on_release(self, *args):
     #     App.get_running_app().root.current = self.text
 
+
 from kivy.uix.dropdown import DropDown
-from kivy.uix.spinner import SpinnerOption
-from concentricui.behaviours.concentricfontscaling import ConcentricFontScaling
+
 
 class OblongSpinner(ConcentricOblongs, Spinner):
-    
     dropdown_cls = ObjectProperty(DropDown)
     option_cls = ObjectProperty(OblongSpinnerButton)
 
@@ -53,24 +46,25 @@ class OblongSpinner(ConcentricOblongs, Spinner):
 
                 cls.widget_walk_starting_point = self
 
-                #cls.shape_count = option_cls_kwargs['shape_count'] if 'shape_count' in option_cls_kwargs else self.shape_count
-                cls.shape_size_hint_list = option_cls_kwargs['shape_size_hint_list'] if 'shape_size_hint_list' in option_cls_kwargs else self.shape_size_hint_list
-                #cls.shape_colour_list = option_cls_kwargs['shape_colour_list'] if 'shape_colour_list' in option_cls_kwargs else self.shape_colour_list
-                cls.colour_scheme = option_cls_kwargs['colour_scheme'] if 'colour_scheme' in option_cls_kwargs else self.colour_scheme
-                cls.master_colour = option_cls_kwargs['master_colour'] if 'master_colour' in option_cls_kwargs else self.master_colour
-                cls.text_colour = option_cls_kwargs['text_colour'] if 'text_colour' in option_cls_kwargs else self.text_colour
+                # cls.shape_count = option_cls_kwargs['shape_count'] if 'shape_count' in option_cls_kwargs else self.shape_count
+                cls.shape_size_hint_list = option_cls_kwargs[
+                    'shape_size_hint_list'] if 'shape_size_hint_list' in option_cls_kwargs else self.shape_size_hint_list
+                # cls.shape_colour_list = option_cls_kwargs['shape_colour_list'] if 'shape_colour_list' in option_cls_kwargs else self.shape_colour_list
+                cls.colour_scheme = option_cls_kwargs[
+                    'colour_scheme'] if 'colour_scheme' in option_cls_kwargs else self.colour_scheme
+                cls.master_colour = option_cls_kwargs[
+                    'master_colour'] if 'master_colour' in option_cls_kwargs else self.master_colour
+                cls.text_colour = option_cls_kwargs[
+                    'text_colour'] if 'text_colour' in option_cls_kwargs else self.text_colour
 
                 if self.total_height:
                     cls.height = (self.total_height - self.height) / len(self.values)
                 else:
-                    cls.height = self.height/2
+                    cls.height = self.height / 2
 
                 super(coloured_option, cls).__init__(**kwargs)
 
-
-
         self.option_cls = coloured_option
-
 
     # def set_text_size(self, *args):
     #     self.text_size = self.size
@@ -78,7 +72,7 @@ class OblongSpinner(ConcentricOblongs, Spinner):
     #     self.halign = 'center'
     #     self.font_size = self.height*0.8
 
-    #sync_height = True
+    # sync_height = True
     text_autoupdate = True
 
     def on_text(self, wid, text):
@@ -94,18 +88,16 @@ class OblongSpinner(ConcentricOblongs, Spinner):
 
         self.create_option_subclass(**self.option_cls_kwargs)
 
-        self.color = 0,0,0,0
+        self.color = 0, 0, 0, 0
 
         if not self.content_pin:
             self.content_pin = self.text
 
-        self.background_color = (0,0,0,0)
+        self.background_color = (0, 0, 0, 0)
         self.background_normal = ''
         self.background_down = ''
         self.background_disabled_normal = ''
         self.background_disabled_down = ''
-
-
 
     def _update_dropdown(self, *largs):
         dp = self._dropdown

@@ -1,9 +1,11 @@
 """ Some notes go here """
 
-all__ = ('ConcentricToggleButton', )
+all__ = ('ConcentricToggleButton',)
+
+from kivy.uix.togglebutton import ToggleButtonBehavior
 
 from concentricui.behaviours.concentricbutton import ConcentricButton
-from kivy.uix.togglebutton import ToggleButtonBehavior
+
 
 class ConcentricToggleButton(ConcentricButton, ToggleButtonBehavior):
 

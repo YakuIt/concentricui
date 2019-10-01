@@ -1,11 +1,10 @@
-
 from math import sqrt
 
-from kivy.graphics import Ellipse, RoundedRectangle
-
-from kivy.properties import AliasProperty, NumericProperty, ReferenceListProperty
+from kivy.graphics import Ellipse
+from kivy.properties import NumericProperty, ReferenceListProperty
 
 """ I have removed all of my AliasProperties as it seems that the base class Ellipse cannot use the event dispatcher """
+
 
 class Circle(Ellipse):
 
@@ -28,18 +27,18 @@ class Circle(Ellipse):
     def set_center_x(self, value):
         self.pos = value - self.size[0] / 2., self.pos[1]
 
-    #center_x = AliasProperty(get_center_x, set_center_x, bind=('x', 'width'))
+    # center_x = AliasProperty(get_center_x, set_center_x, bind=('x', 'width'))
     center_x = NumericProperty()
 
     def get_center_y(self):
         """ So useful! """
-        return self.pos[1] + self.diameter/2
+        return self.pos[1] + self.diameter / 2
 
     def set_center_y(self, value):
         """ Can't believe this wasn't already implemented! """
         self.pos = self.pos[0], value - self.size[1] / 2.
 
-    #center_y = AliasProperty(get_center_y, set_center_y, bind=['size', 'pos'])
+    # center_y = AliasProperty(get_center_y, set_center_y, bind=['size', 'pos'])
     center_y = NumericProperty()
 
     center = ReferenceListProperty(center_x, center_y)
@@ -56,29 +55,28 @@ class Circle(Ellipse):
     def __init__(self, **kwargs):
         super(Circle, self).__init__(**kwargs)
 
-
     def to_inner_center(self, x, y):
-        local_x, local_y = x - self.pos[0], y-self.pos[1]
-        from_center_pos = local_x - self.size[0]/2, local_y - self.size[1]/2
+        local_x, local_y = x - self.pos[0], y - self.pos[1]
+        from_center_pos = local_x - self.size[0] / 2, local_y - self.size[1] / 2
         return from_center_pos
 
     def get_inner_x_at_y(self, y):
 
-        radius = min(self.size)/2
+        radius = min(self.size) / 2
 
         if abs(y) > radius:
             return None
-        x = sqrt(abs(radius**2-y**2))
+        x = sqrt(abs(radius ** 2 - y ** 2))
 
         return x
 
     def get_inner_y_at_x(self, x):
 
-        radius = min(self.size)/2
+        radius = min(self.size) / 2
 
         if abs(x) > radius:
             return None
 
-        y = sqrt(abs(radius**2-x**2))
+        y = sqrt(abs(radius ** 2 - x ** 2))
 
         return y

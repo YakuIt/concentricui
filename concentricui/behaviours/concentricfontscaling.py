@@ -1,15 +1,13 @@
-from kivy.uix.label import Label
-from kivy.properties import BooleanProperty, NumericProperty, ReferenceListProperty, AliasProperty
-
 from kivy.clock import Clock
-
+from kivy.properties import NumericProperty, ReferenceListProperty, AliasProperty
 from kivy.uix.widget import Widget
+
 
 class ConcentricFontScaling(Widget):
     font_size_hint = NumericProperty()
     inner_width, inner_height = NumericProperty(), NumericProperty()
     inner_size = ReferenceListProperty(inner_width, inner_height)
-    
+
     def __init__(self, **kwargs):
         super(ConcentricFontScaling, self).__init__(**kwargs)
 
@@ -33,13 +31,11 @@ class ConcentricFontScaling(Widget):
 
     texture_size = AliasProperty(get_texture_size, set_texture_size)
 
-
     def set_font_size_from_hint(self, *args):
         self.font_size = self.inner_height * self.font_size_hint
         self.update()
 
     def set_font_size(self, *args):
-
 
         if not self.get_texture_size():
             return

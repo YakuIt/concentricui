@@ -5,9 +5,8 @@ from kivy.properties import NumericProperty
 
 """ I have removed all of my AliasProperties as it seems that the base class Ellipse cannot use the event dispatcher """
 
+
 class RoundedRec(RoundedRectangle):
-
-
     center_x = NumericProperty()
     center_y = NumericProperty()
 
@@ -26,59 +25,55 @@ class RoundedRec(RoundedRectangle):
 
         width, height = widget_size
 
-        border_horizontal = width * (1-size_hint)
-        border_vertical = height * (1-size_hint)
+        border_horizontal = width * (1 - size_hint)
+        border_vertical = height * (1 - size_hint)
 
         border = min(border_horizontal, border_vertical)
 
         #  fixme if needed you could pretty easily make have an option for max_border
-        #self.size = width - border, height - border
+        # self.size = width - border, height - border
         self.size = width - border, height - border
-
-
 
     def to_inner_center(self, x, y):
         local_x, local_y = x - self.pos[0], y - self.pos[1]
-        from_center_x, from_center_y = local_x - self.size[0]/2, local_y - self.size[1]/2
-        #factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
+        from_center_x, from_center_y = local_x - self.size[0] / 2, local_y - self.size[1] / 2
+        # factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
         return from_center_x, from_center_y
-
 
     def get_inner_y_at_x(self, x):
 
         """ for now this will onlx work if all radii are the same"""
 
-        if abs(x) > self.size[0]/2:
+        if abs(x) > self.size[0] / 2:
             return None
 
         radius = self.radius[0][1]
 
-        vertical_without_corner = self.size[1]/2
+        vertical_without_corner = self.size[1] / 2
 
-        if - self.size[0]/2 + radius < x < self.size[0]/2 - radius:
+        if - self.size[0] / 2 + radius < x < self.size[0] / 2 - radius:
             #  not in range of a corner, just in the central rectangle area
             return vertical_without_corner
         else:
 
             #  this statement is to actually remove the height of the corner
             #  think about it: at the very sides of the circles, you take off the entire radius
-            corner_x = abs(x) - self.size[0]/2 + radius
+            corner_x = abs(x) - self.size[0] / 2 + radius
             corner = radius - sqrt(abs(corner_x ** 2 - abs(radius) ** 2))
             return vertical_without_corner - corner
-
 
     def get_inner_x_at_y(self, y):
 
         """ for now this will only work if all radii are the same"""
 
-        if abs(y) > self.size[1]/2:
+        if abs(y) > self.size[1] / 2:
             return None
 
         radius = self.radius[0][0]
 
-        horizontal_without_corner = self.size[0]/2
+        horizontal_without_corner = self.size[0] / 2
 
-        if - self.size[1]/2 + radius < y < self.size[1]/2 - radius:
+        if - self.size[1] / 2 + radius < y < self.size[1] / 2 - radius:
             #  not in range of a corner, just in the central rectangle area
 
             return horizontal_without_corner
@@ -86,6 +81,6 @@ class RoundedRec(RoundedRectangle):
 
             #  this statement is to actually remove the width of the corner
             #  think about it: at the very bottom of the circles, you take off the entire radius from the width
-            corner_y = abs(y) - self.size[1]/2 + radius
+            corner_y = abs(y) - self.size[1] / 2 + radius
             corner = radius - sqrt(abs(corner_y ** 2 - abs(radius) ** 2))
             return horizontal_without_corner - corner

@@ -1,17 +1,16 @@
 """ This is the base for all concentric ui widgets """
 
+from functools import partial
+
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.utils import rgba
-from kivy.uix.widget import Widget
+from kivy.properties import AliasProperty, StringProperty, ColorProperty, BooleanProperty
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty, AliasProperty, StringProperty, ListProperty, ColorProperty, BooleanProperty
-
-from functools import partial
+from kivy.uix.widget import Widget
+from kivy.utils import rgba
 
 
 class MasterColour(object):
-
     pseudo_bind_master_colour_attribute = StringProperty('foreground_colour', allownone=True)
     _master_colour = ColorProperty()
 
@@ -63,9 +62,11 @@ class MasterColour(object):
             self.pass_master_colour_to_children(wid, value)
 
     """ the bellow function could use a list of widgets to apply the scheme to """
+
     def pass_master_colour_to_children(self, wid, colour):
         """ this function is expanded on in subclasses of colourwidget """
         pass
+
 
 # class MasterTextColour(object):
 #
@@ -180,8 +181,7 @@ class MasterColour(object):
 #         pass
 
 
-
-class ColourProperties(MasterColour): #, MasterTextColour, MasterTrimColour):
+class ColourProperties(MasterColour):  # , MasterTextColour, MasterTrimColour):
     background_colour = ColorProperty()
     foreground_colour = ColorProperty()
     trim_colour = ColorProperty()
@@ -198,16 +198,13 @@ class ColourWidget(Widget, ColourProperties):
     needs_trim_colour = BooleanProperty(False)
     needs_text_colour = BooleanProperty(False)
 
-
     def __init__(self, **kwargs):
 
         super(ColourWidget, self).__init__(**kwargs)
 
         Clock.schedule_once(self.do_colour_scheme)
 
-
     def do_colour_scheme(self, *args):
-
 
         if self.colour_scheme == 'master':
             pass
@@ -245,7 +242,6 @@ class ColourWidget(Widget, ColourProperties):
         self.set_master_colour(self.master_colour)
         # self.set_master_text_colour(self.master_text_colour)
         # self.set_master_trim_colour(self.master_trim_colour)
-
 
     def get_previous(self, *args):
 
@@ -285,7 +281,7 @@ class ColourWidget(Widget, ColourProperties):
 
         if self.pseudo_bind_master_colour_attribute:
             colour = getattr(self, self.pseudo_bind_master_colour_attribute)
-            #self.master_colour = colour
+            # self.master_colour = colour
             self.pseudo_bind_master_colour(self.pseudo_bind_master_colour_attribute, self, colour)
 
         self.bind(foreground_colour=partial(self.pseudo_bind_master_colour, 'foreground_colour'),
@@ -303,7 +299,6 @@ class ColourWidget(Widget, ColourProperties):
         #           trim_colour=partial(self.pseudo_bind_master_trim_colour, 'trim_colour'),
         #           text_colour=partial(self.pseudo_bind_master_trim_colour, 'text_colour'),
         #           )
-
 
     #
     #     # for x in self.walk():

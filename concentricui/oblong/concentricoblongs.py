@@ -1,20 +1,13 @@
 """ Some notes go here """
 
-all__ = ('ConcentricOblongs', )
+all__ = ('ConcentricOblongs',)
 
 from kivy.clock import Clock
-
-from kivy.uix.widget import Widget
-from kivy.uix.label import Label
 from kivy.properties import ObjectProperty, StringProperty, AliasProperty, ReferenceListProperty
+from kivy.uix.widget import Widget
 
-from concentricui.oblong.oblong import Oblong
 from concentricui.behaviours.concentricshapes import ConcentricShapes
-
-from kivy.base import EventLoop
-
-from concentricui.circle.circlelabel import CircleLabel
-
+from concentricui.oblong.oblong import Oblong
 from concentricui.widgets.textbutton import Text
 
 
@@ -44,7 +37,6 @@ class ConcentricOblongs(ConcentricShapes):
 
         super(ConcentricOblongs, self).__init__(**kwargs)
 
-
         self.add_pins()
 
         self.bind(size=Clock.schedule_once(self.set_pin_pos))
@@ -55,7 +47,8 @@ class ConcentricOblongs(ConcentricShapes):
         self.bind(shape_list=self.add_pins)
 
     def add_pins(self):
-        for pin_position, pin in ('opening_pin', self.opening_pin), ('closing_pin', self.closing_pin), ('content_pin', self.content_pin):
+        for pin_position, pin in ('opening_pin', self.opening_pin), ('closing_pin', self.closing_pin), (
+                'content_pin', self.content_pin):
             self.add_pin(pin_position=pin_position, pin_item=pin)
 
     def on_opening_pin(self, wid, pin):
@@ -69,7 +62,8 @@ class ConcentricOblongs(ConcentricShapes):
 
     def add_pin(self, pin_position, pin_item, *args):
 
-        little_pin_dict = {'opening_pin': self.opening_pin, 'closing_pin': self.closing_pin, 'content_pin': self.content_pin}
+        little_pin_dict = {'opening_pin': self.opening_pin, 'closing_pin': self.closing_pin,
+                           'content_pin': self.content_pin}
 
         pin = little_pin_dict[pin_position]
 
@@ -93,7 +87,6 @@ class ConcentricOblongs(ConcentricShapes):
             pin_widget = pin
         pin_widget.id = pin_position
 
-
         # if (hasattr(pin_widget, 'master_colour') and not pin_widget.master_colour) or (hasattr(pin_widget, 'colour_scheme') and pin_widget.colour_scheme):
         #     if self.master_colour:
         #         print('this')
@@ -103,9 +96,8 @@ class ConcentricOblongs(ConcentricShapes):
         #         pin_widget.colour_scheme = self.colour_scheme
 
         setattr(pin_widget, 'colour_scheme', self.colour_scheme)
-        #setattr(pin_widget, 'use_master_colour', self.use_master_colour)
+        # setattr(pin_widget, 'use_master_colour', self.use_master_colour)
         setattr(pin_widget, 'master_colour', tuple(self.master_colour))
-
 
         try:
             self.remove_widget(pin)
@@ -140,13 +132,11 @@ class ConcentricOblongs(ConcentricShapes):
                 self.set_content_pin_pos()
 
         for pin in (self.opening_pin, self.closing_pin, self.content_pin):
-            #if issubclass(type(pin), Label)
+            # if issubclass(type(pin), Label)
             if hasattr(pin, 'text_size'):
                 pin.text_size = pin.size
 
-
     def set_content_pin_size(self, *args):
-
 
         if self.orientation == 'horizontal':
             left = self.opening_pin.right if issubclass(type(self.opening_pin), Widget) else self.inner_x
@@ -168,17 +158,15 @@ class ConcentricOblongs(ConcentricShapes):
 
         if self.orientation == 'horizontal':
             left = self.opening_pin.right if issubclass(type(self.opening_pin), Widget) else self.inner_x
-            x = left + self.content_pin.width/2
+            x = left + self.content_pin.width / 2
             y = self.center_y
 
         if self.orientation == 'vertical':
             bottom = self.opening_pin.top if issubclass(type(self.opening_pin), Widget) else self.inner_y
-            y = bottom + self.content_pin.height/2
+            y = bottom + self.content_pin.height / 2
             x = self.center_x
 
         self.content_pin.center = x, y
-
-
 
     def get_opening_anchor(self):
         if self.shape_list:
@@ -198,17 +186,18 @@ class ConcentricOblongs(ConcentricShapes):
     def set_closing_anchor(self, value):
         pass
 
-
     opening_anchor = AliasProperty(get_opening_anchor, set_opening_anchor)
     closing_anchor = AliasProperty(get_closing_anchor, set_closing_anchor)
 
     def draw_shape(self, shape_size_hint, shape_colour, **kwargs):
         """ overwrite this function for circle, oblong, rounded rectangle """
 
-        #Color(*shape_colour)
-        width, height = self.width*shape_size_hint, self.height*shape_size_hint
+        # Color(*shape_colour)
+        width, height = self.width * shape_size_hint, self.height * shape_size_hint
 
-        shape = Oblong(orientation=self.orientation, size=(width, height), size_hint=shape_size_hint, min_size_hint=min(self.shape_size_hint_list), max_size_hint=max(self.shape_size_hint_list), pos=self.pos)
+        shape = Oblong(orientation=self.orientation, size=(width, height), size_hint=shape_size_hint,
+                       min_size_hint=min(self.shape_size_hint_list), max_size_hint=max(self.shape_size_hint_list),
+                       pos=self.pos)
 
         return shape
 
@@ -220,8 +209,6 @@ class ConcentricOblongs(ConcentricShapes):
             return self.get_inner_shape_width()
         else:
             raise Exception("orientation should be horizontal or vertical.....")
-
-
 
     # def update_shape_list_size(self, *args):
     #

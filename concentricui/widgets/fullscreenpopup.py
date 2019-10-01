@@ -1,18 +1,15 @@
 """ Some notes go here """
 
-all__ = ('FullScreenPopup', )
-
-from kivy.properties import ObjectProperty
-
-from kivy.uix.modalview import ModalView
-from concentricui.widgets.topbar import TopBarShape
-
-from kivy.uix.boxlayout import BoxLayout
-from concentricui.widgets.textbutton import TextButton
-
-from concentricui.colourscheme.colourwidget import ColourWidget
+all__ = ('FullScreenPopup',)
 
 from kivy.graphics import Color, Rectangle
+from kivy.properties import ObjectProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.modalview import ModalView
+
+from concentricui.colourscheme.colourwidget import ColourWidget
+from concentricui.widgets.textbutton import TextButton
+from concentricui.widgets.topbar import TopBarShape
 
 
 # <NicePopup>:
@@ -53,16 +50,13 @@ from kivy.graphics import Color, Rectangle
 
 
 class FullScreenPopup(ModalView, ColourWidget):
-
     content = ObjectProperty()
     top_bar = ObjectProperty()
 
     background_rectangle = ObjectProperty()
 
     def __init__(self, **kwargs):
-
-        #self.colour_scheme = 'app'
-
+        # self.colour_scheme = 'app'
 
         super(FullScreenPopup, self).__init__(**kwargs)
 
@@ -70,9 +64,9 @@ class FullScreenPopup(ModalView, ColourWidget):
 
         #
         self.background = "textures/buttons/blank.png"
-        self.background_color = (0,0,0,0)
+        self.background_color = (0, 0, 0, 0)
         #
-        #self.background_colour = (1,0,1,1)
+        # self.background_colour = (1,0,1,1)
         with self.canvas.before:
             self.background_rectangle_colour_instruction = Color(*self.background_colour)
             self.background_rectangle = Rectangle()
@@ -80,7 +74,8 @@ class FullScreenPopup(ModalView, ColourWidget):
         popup_boxlayout = BoxLayout(orientation='vertical')
 
         #
-        self.top_bar = TopBarShape(id='top_bar', master_colour='trim_colour', shape_size_hint_list=[1], allow_concentric=False, size_hint_y=0.04, pos_hint={'top':1})
+        self.top_bar = TopBarShape(id='top_bar', master_colour='trim_colour', shape_size_hint_list=[1],
+                                   allow_concentric=False, size_hint_y=0.04, pos_hint={'top': 1})
         save_and_close_button = TextButton(text='Save and Close', pos=self.top_bar.pos, size=self.top_bar.size)
         save_and_close_button.bind(on_release=self.save_and_close)
         self.top_bar.content_pin = save_and_close_button
@@ -88,7 +83,7 @@ class FullScreenPopup(ModalView, ColourWidget):
         self.add_widget(popup_boxlayout)
         popup_boxlayout.add_widget(self.top_bar)
         #
-        boxlayout = BoxLayout(orientation='vertical', top=self.top_bar.y, size_hint_y=(1-self.top_bar.size_hint_y))
+        boxlayout = BoxLayout(orientation='vertical', top=self.top_bar.y, size_hint_y=(1 - self.top_bar.size_hint_y))
         popup_boxlayout.add_widget(boxlayout)
         self.content = boxlayout
 
@@ -99,7 +94,7 @@ class FullScreenPopup(ModalView, ColourWidget):
         if self.background_rectangle:
             self.background_rectangle.size = size
 
-        #self.background_rectangle_colour_instruction.rgba = self.background_colour
+        # self.background_rectangle_colour_instruction.rgba = self.background_colour
 
         # if self.top_bar:
         #     self.top_bar.size = self.height * 0.04, self.width
@@ -108,7 +103,6 @@ class FullScreenPopup(ModalView, ColourWidget):
     #     if self.top_bar:
     #         self.top_bar.top = self.top
     #
-
 
     def save_and_close(self):
         """ save code goes here """

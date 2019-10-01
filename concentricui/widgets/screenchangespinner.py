@@ -1,16 +1,15 @@
 """ Some notes go here """
 
-all__ = ('ScreenChangeSpinner', )
+all__ = ('ScreenChangeSpinner',)
+
+from kivy.app import App
+from kivy.clock import Clock
+from kivy.properties import ListProperty
 
 from concentricui.oblong.oblongspinner import OblongSpinner
 
-from kivy.properties import ListProperty
-from kivy.clock import Clock
-
-from kivy.app import App
 
 class ScreenChangeSpinner(OblongSpinner):
-
     screen_names_list = ListProperty()
     text_autoupdate = True
 

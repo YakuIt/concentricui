@@ -1,10 +1,11 @@
 """ Some notes go here """
 
-all__ = ('RoundedRectangleDropdown', )
+all__ = ('RoundedRectangleDropdown',)
+
+from kivy.uix.dropdown import DropDown
 
 from concentricui.roundedrectangle.concentricroundedrectangles import ConcentricRoundedRectangles
 
-from kivy.uix.dropdown import DropDown
 
 class RoundedRectangleDropdown(ConcentricRoundedRectangles, DropDown):
 

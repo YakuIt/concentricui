@@ -1,19 +1,17 @@
 """ Some notes go here """
 
-all__ = ('ConcentricShapes', )
-
-from kivy.graphics import Color
-from kivy.properties import BooleanProperty, NumericProperty, ListProperty, ReferenceListProperty, AliasProperty, VariableListProperty, OptionProperty
-
-from concentricui.colourscheme.colourwidget import ColourWidget
+all__ = ('ConcentricShapes',)
 
 from itertools import zip_longest
 
-from kivy.clock import Clock
+from kivy.graphics import Color
+from kivy.properties import BooleanProperty, NumericProperty, ListProperty, ReferenceListProperty, AliasProperty, \
+    OptionProperty
+
+from concentricui.colourscheme.colourwidget import ColourWidget
 
 
 class ConcentricShapes(ColourWidget):
-
     trim = OptionProperty(True, options=(True, False, 'state', 'focus', ('state', 'focus')))
 
     show_trim = BooleanProperty(False)
@@ -21,7 +19,6 @@ class ConcentricShapes(ColourWidget):
     allow_concentric = BooleanProperty(True)
 
     outer_alpha_store = NumericProperty(allownone=True)
-
 
     def on_show_trim(self, wid, show_trim):
 
@@ -62,7 +59,7 @@ class ConcentricShapes(ColourWidget):
     shape_colour_list = ListProperty()
     shape_allow_collision_list = ListProperty()
     colour_instruction_list = ListProperty()
-    #master_colour = ListProperty()
+    # master_colour = ListProperty()
 
     #  perhaps i just want to import certain behaviours from concentric shapes, but i dont want to draw an actual shape
     draw_shape_toggle = False
@@ -79,7 +76,7 @@ class ConcentricShapes(ColourWidget):
              'shape_allow_collision': shape_allow_collision}
             for shape_size_hint, shape_colour, shape_allow_collision
             in zip_longest(self.shape_size_hint_list, self.shape_colour_list, self.shape_allow_collision_list)
-                                 ]
+        ]
 
         sorted_by_size_hint = list(reversed(sorted(shape_dictionary_list, key=lambda k: k['shape_size_hint'])))
 
@@ -94,7 +91,8 @@ class ConcentricShapes(ColourWidget):
         self.shape_colour_list = [x['shape_colour'] for x in sorted_by_size_hint]
         self.shape_allow_collision_list = [x['shape_allow_collision'] for x in sorted_by_size_hint]
 
-    shape_dictionary = AliasProperty(get_shape_dictionary, set_shape_dictionary, bind=['shape_size_hint_list', 'shape_colour_list'])
+    shape_dictionary = AliasProperty(get_shape_dictionary, set_shape_dictionary,
+                                     bind=['shape_size_hint_list', 'shape_colour_list'])
 
     def __init__(self, **kwargs):
 
@@ -109,7 +107,6 @@ class ConcentricShapes(ColourWidget):
 
         super(ConcentricShapes, self).__init__(**kwargs)
 
-
         if 'shape_dictionary' in kwargs:
             shape_dictionary = kwargs.pop('shape_dictionary')
             self.shape_dictionary = shape_dictionary
@@ -117,7 +114,7 @@ class ConcentricShapes(ColourWidget):
         #     self.set_secondary_colours()
 
         if not self.shape_size_hint_list:
-            self.shape_size_hint_list = [1,]
+            self.shape_size_hint_list = [1, ]
 
         """ this will hopefully facilitate setting the master colour to a string,
             declaring a colour attribute from the active colour scheme """
@@ -126,30 +123,31 @@ class ConcentricShapes(ColourWidget):
         # if not string_master_colour:
         #     string_master_colour = 'foreground_colour'
 
-        #print('maaaaybe', string_master_colour)
+        # print('maaaaybe', string_master_colour)
 
         # #  do it here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if self.shape_colour_list:
             pass
         # elif string_master_colour:
         #     pass
-            #self.master_colour = getattr(self, string_master_colour)
+        # self.master_colour = getattr(self, string_master_colour)
         # elif not self.master_colour:
         #     self.master_colour = self.foreground_colour
         #
         # print('!!!!!!!', string_master_colour, self.master_colour)
 
-        #self.set_secondary_colours()
+        # self.set_secondary_colours()
 
         self.draw_shapes()
-        self.bind(pos=self.update_shape_list_pos, size=self.update_shape_list_size, master_colour=self.set_secondary_colours)
+        self.bind(pos=self.update_shape_list_pos, size=self.update_shape_list_size,
+                  master_colour=self.set_secondary_colours)
 
         # if self.master_colour and self.use_master_colour not in ('foreground_colour', 'background_colour', 'text_colour', 'trim_colour'):
         #     if self.__class__.__name__ == 'ScreenChangeSpinner':
         #         print('kkkkkkkkkkkkkkkkkkkkkk', 'self.master_colour', self.master_colour, 'self.use_master_colour', self.use_master_colour)
         #     self.set_secondary_colours()
 
-        #if self.trim is True:
+        # if self.trim is True:
 
     def draw_shapes(self):
 
@@ -167,7 +165,7 @@ class ConcentricShapes(ColourWidget):
                 shape_colour = dictionary['shape_colour']
                 if not shape_colour:
                     #  placeholder color
-                    shape_colour = (1,1,1,1)
+                    shape_colour = (1, 1, 1, 1)
                 colour_instruction = Color(*shape_colour)
                 self.colour_instruction_list.append(colour_instruction)
                 shape = self.draw_shape(**dictionary)
@@ -175,7 +173,6 @@ class ConcentricShapes(ColourWidget):
 
     def draw_shape(self, **kwargs):
         raise Exception("Hey! This class is not meant to be used directly and this method is meant to be overwritten!")
-
 
     def update_shape_list_pos(self, *args):
 
@@ -186,7 +183,6 @@ class ConcentricShapes(ColourWidget):
             pass
             shape.set_center(self.center)
 
-
     def update_shape_list_size(self, *args):
         for shape, size_hint in zip(self.shape_list, self.shape_size_hint_list):
             pass
@@ -195,15 +191,13 @@ class ConcentricShapes(ColourWidget):
 
         self.update_shape_list_pos()
 
-
-
     def get_inner_shape_width(self):
 
         if not self.shape_list:
             return None
 
         return self.shape_list[-1].size[0]
-    
+
     def set_inner_shape_width(self, value):
 
         if not self.shape_list:
@@ -224,14 +218,14 @@ class ConcentricShapes(ColourWidget):
             return None
 
         self.shape_list[-1].size[1] = value
-        
+
     def get_inner_shape_x(self):
 
         if not self.shape_list:
             return None
 
         return self.shape_list[-1].pos[0]
-    
+
     def set_inner_shape_x(self, value):
 
         if not self.shape_list:
@@ -291,7 +285,6 @@ class ConcentricShapes(ColourWidget):
     inner_size = ReferenceListProperty(inner_width, inner_height)
     inner_pos = ReferenceListProperty(inner_x, inner_y)
 
-
     # def to_inner(self, x, y, relative=True):
     #     '''Transform parent coordinates to local coordinates. See
     #     :mod:`~kivy.uix.relativelayout` for details on the coordinate systems.
@@ -342,7 +335,6 @@ class ConcentricShapes(ColourWidget):
     def get_inner_pos_at_pos(self, pos, both_coordinates=False):
         raise Exception('not yet implemented. need to think about this one')
 
-
     def get_inner_width_at_y(self, y):
 
         if not self.draw_shape_toggle:
@@ -377,7 +369,6 @@ class ConcentricShapes(ColourWidget):
 
         return width, height
 
-
     def collide_point(self, x, y):
         '''
 
@@ -393,17 +384,14 @@ class ConcentricShapes(ColourWidget):
         inner_x, inner_right = self.get_inner_x_at_y(y, both_coordinates=True)
         inner_top, inner_y = self.get_inner_y_at_x(x, both_coordinates=True)
 
-
         if not all((inner_x, inner_right, inner_y, inner_top)):
             return False
 
-
         return inner_x <= local_x <= inner_right and inner_top <= local_y <= inner_y
-
 
     """ COLOURS """
 
-    #master_colour = ListProperty()
+    # master_colour = ListProperty()
 
     @staticmethod
     def set_colour_by_size_hint(colour, size_hint, min_size_hint):
@@ -413,13 +401,13 @@ class ConcentricShapes(ColourWidget):
 
         original_alpha = colour[3] if len(colour) > 3 else None
 
-        colour_scalar = (size_hint-min_size_hint)
+        colour_scalar = (size_hint - min_size_hint)
 
-        uncapped_colour_list = [x+colour_scalar for x in colour]
+        uncapped_colour_list = [x + colour_scalar for x in colour]
         max_colour_value = max(uncapped_colour_list)
         if max_colour_value > 1:
-            capped_colour_list = [x/max_colour_value for x in uncapped_colour_list]
-            #capped_colour_list = [x if x < 1 else 1 for x in uncapped_colour_list]
+            capped_colour_list = [x / max_colour_value for x in uncapped_colour_list]
+            # capped_colour_list = [x if x < 1 else 1 for x in uncapped_colour_list]
 
             if original_alpha is not None:
                 capped_colour_list[3] = original_alpha
@@ -431,7 +419,8 @@ class ConcentricShapes(ColourWidget):
 
     def set_secondary_colours(self, *args):
 
-        print('set_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_colours')
+        print(
+            'set_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_coloursset_secondary_colours')
 
         if not self.master_colour and self.shape_colour_list:
             self.master_colour = self.shape_colour_list[0]
@@ -483,7 +472,7 @@ class ConcentricShapes(ColourWidget):
             if not self.show_trim and self.allow_concentric:
                 self.outer_alpha_store = instruction.a
                 self.colour_instruction_list[0].a = 0
-            #self.colour_instruction_list[0].a = 1 if self.show_trim else 0
+            # self.colour_instruction_list[0].a = 1 if self.show_trim else 0
 
     # def on_master_colour(self, wid=None, master_colour=None):
     #     if master_colour:
@@ -512,7 +501,7 @@ class ConcentricShapes(ColourWidget):
 
     def do_colour_update(self, *args):
         super(ConcentricShapes, self).do_colour_update(*args)
-        print('please'*100)
+        print('please' * 100)
         self.set_secondary_colours()
 
     def get_inner_colour(self):
@@ -541,7 +530,6 @@ class ConcentricShapes(ColourWidget):
             return self.trim_colour
         else:
             return self.shape_colour_list[0]
-
 
         # print(self, self.trim, self.show_trim, '*****'*60)
         #
@@ -582,7 +570,6 @@ class ConcentricShapes(ColourWidget):
 
         return outer_colour
 
-
     def set_outer_colour(self, value):
 
         if not self.shape_colour_list:
@@ -591,9 +578,8 @@ class ConcentricShapes(ColourWidget):
         self.shape_colour_list[0] = value
         self.set_secondary_colours()
 
-    outer_colour = AliasProperty(get_outer_colour, set_outer_colour, bind=['shape_colour_list', 'colour_instruction_list', 'trim'])
-
-
+    outer_colour = AliasProperty(get_outer_colour, set_outer_colour,
+                                 bind=['shape_colour_list', 'colour_instruction_list', 'trim'])
 
 
 hex_colwormap = {
