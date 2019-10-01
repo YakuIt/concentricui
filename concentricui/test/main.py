@@ -50,7 +50,7 @@ from kivy.uix.screenmanager import ScreenManager
 #         #w2 = OblongTextInput(shape_size_hint_list=[0.7, 0.8, 0.9], master_colour=(1,0,1,0.1))
 #         #w2 = OblongSpinner(total_height=Window.height, size_hint_y=0.2,option_cls_kwargs={'opening_pin':circle_slider, 'closing_pin':True, 'shape_size_hint_list':[0.8, 0.7], 'master_colour':(1,1,0,1)}, values=['1aaaaaaaaaaaaaabbb','2aaaaaaaaaaaaaabbb','3aaaaaaaaaaaaaabbb','4aaaaaaaaaaaaaabbb','5aaaaaaaaaaaaaabbb'], text_colour=(0,1,1,1),opening_pin='True',closing_pin=circle_slider, shape_size_hint_list=[0.7, 1], master_colour=(1,0,1,1))
 
-from concentricui.widgets.colourscreen import ColourScreen
+from concentricui.colourscheme.colourscreen import ColourScreen
 
 from concentricui.circle.circletogglebutton import CircleToggleButton
 
