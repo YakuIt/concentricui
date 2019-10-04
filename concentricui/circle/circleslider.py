@@ -14,7 +14,6 @@ from concentricui.oblong.concentricoblongs import ConcentricOblongs
 
 
 class CircleSlider(Slider, ConcentricCircles):
-    draw_shape_toggle = BooleanProperty(False)
 
     circle_label = ObjectProperty()
     display_value_toggle = BooleanProperty(False)
@@ -29,13 +28,15 @@ class CircleSlider(Slider, ConcentricCircles):
     slider_bar = ObjectProperty()
     slider_bar_toggle = ObjectProperty(True)
 
+    draw_shape_toggle = ObjectProperty(False)
+
     def __init__(self, **kwargs):
         #
         # self.colour_scheme = kwargs.pop('colour_scheme')
         # self.master_colour = kwargs.pop('master_colour')
 
         self.circle_label = None
-
+        # self.slider_bar_toggle = kwargs.pop('slider_bar_toggle')
         super(CircleSlider, self).__init__(**kwargs)
         self.value = kwargs.pop('value')
         # self.sensitivity = kwargs.pop('sensitivity')
@@ -52,14 +53,19 @@ class CircleSlider(Slider, ConcentricCircles):
         self.background_width = 0
 
         if self.slider_bar_toggle:
+            """ you can change do shape_dictionary=self.shape_dictionary if you want this little bar to be concentric
+                but im pretty sure it looks awful so im not even going to provide an option for that """
             self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation,
-                                                shape_size_hint_list=[1], master_colour=self.master_colour)
+                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme)
             self.add_widget(self.slider_bar)
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)
 
+        print('DID ITT')
+
         self.font_size_hint = 0.5
-        value_text = str(int(self.value))
+        value_text = str(int(self.value)) if self.display_value_toggle else ''
+
         self.circle_label = CircleLabel(text=value_text, font_size_hint=self.font_size_hint,
                                         text_colour=self.text_colour, bold=True, size=self.size, pos=self.pos,
                                         shape_dictionary=self.shape_dictionary, colour_scheme=self.colour_scheme,
@@ -99,6 +105,8 @@ class CircleSlider(Slider, ConcentricCircles):
                                     self.height / 10) if self.orientation == 'horizontal' else (
                 self.width / 10, self.height - self.circle_label.get_inner_shape_height())
             self.slider_bar.center = self.center
+
+            print('good bat!!!', self.slider_bar.size)
 
     def set_slider_bar_colour(self, wid, colour):
         if self.slider_bar:

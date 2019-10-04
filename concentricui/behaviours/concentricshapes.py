@@ -186,6 +186,7 @@ class ConcentricShapes(ColourWidget):
     def update_shape_list_size(self, *args):
         for shape, size_hint in zip(self.shape_list, self.shape_size_hint_list):
             pass
+
             shape.set_size(self.size, size_hint)
             shape.set_center(self.center)
 
