@@ -42,7 +42,7 @@ class CircleSlider(Slider, ConcentricCircles):
         # self.sensitivity = kwargs.pop('sensitivity')
 
         #  disable all the slider's old images
-        self.cursor_image = ''
+        self.cursor_image = '../textures/blank.png'
         self.cursor_width = 0
         self.cursor_height = 0
         self.background_horizontal = ''
