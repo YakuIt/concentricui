@@ -38,7 +38,7 @@ class CircleSlider(Slider, ConcentricCircles):
         self.circle_label = None
         # self.slider_bar_toggle = kwargs.pop('slider_bar_toggle')
         super(CircleSlider, self).__init__(**kwargs)
-        self.value = kwargs.pop('value')
+        # self.value = kwargs.pop('value')
         # self.sensitivity = kwargs.pop('sensitivity')
 
         #  disable all the slider's old images
@@ -56,7 +56,8 @@ class CircleSlider(Slider, ConcentricCircles):
             """ you can change do shape_dictionary=self.shape_dictionary if you want this little bar to be concentric
                 but im pretty sure it looks awful so im not even going to provide an option for that """
             self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation,
-                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme)
+                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme,
+                                                allow_concentric=False)
             self.add_widget(self.slider_bar)
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)

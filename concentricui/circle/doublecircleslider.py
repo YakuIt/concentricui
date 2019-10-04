@@ -10,6 +10,9 @@ from concentricui.oblong.concentricoblongs import ConcentricOblongs
 
 
 class DoubleCircleSlider(ConcentricShapes):
+    #  fixme i'd like to have something such that if the two slider values are the same, then each is shifted by half of
+    #  fixme its width away from each other
+
     integers = BooleanProperty(False)
 
     #  not sure how implemented this is
@@ -108,7 +111,8 @@ class DoubleCircleSlider(ConcentricShapes):
             """ you can change do shape_dictionary=self.shape_dictionary if you want this little bar to be concentric
                 but im pretty sure it looks awful so im not even going to provide an option for that """
             self.slider_bar = ConcentricOblongs(size=self.size, pos=self.pos, orientation=self.orientation,
-                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme)
+                                                master_colour=self.master_colour, colour_scheme=self.colour_scheme,
+                                                allow_concentric=False)
             self.add_widget(self.slider_bar)
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)

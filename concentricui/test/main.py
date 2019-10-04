@@ -70,9 +70,10 @@ class MenuScreen(ColourScreen):
                                                   size_hint_y=0.1, orientation='horizontal',
                                                   shape_size_hint_list=[0.6, 1])
 
-        circle_slider = CircleSlider(range=(1, 9), master_colour='foreground_colour', colour_scheme='screen', value=5,
-                                     display_value_toggle=True, size_hint_y=0.1, orientation='horizontal',
-                                     shape_size_hint_list=[0.6, 1])
+        # circle_slider = CircleSlider(range=(1, 9), master_colour='foreground_colour', colour_scheme='screen', value=5,
+        #                              display_value_toggle=True, size_hint_y=0.1, orientation='horizontal',
+        #                              shape_size_hint_list=[0.6, 1])
+        circle_slider = CircleSlider()
 
         textinput = CircleToggleButton(text_colour='#123456', master_colour='#339966',
                                        colour_scheme='screen')  # , shape_size_hint_list=[0.6, 1])
