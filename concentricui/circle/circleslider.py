@@ -5,7 +5,7 @@ all__ = ('CircleSlider',)
 from functools import partial
 
 from kivy.clock import Clock
-from kivy.properties import NumericProperty, BooleanProperty, ObjectProperty
+from kivy.properties import NumericProperty, BooleanProperty, ObjectProperty, AliasProperty
 from kivy.uix.slider import Slider
 
 from concentricui.circle.circlelabel import CircleLabel
@@ -14,6 +14,30 @@ from concentricui.oblong.concentricoblongs import ConcentricOblongs
 
 
 class CircleSlider(Slider, ConcentricCircles):
+    integers = BooleanProperty(False)
+
+    decimal_places = NumericProperty(0)
+    sig_figs = NumericProperty(None)
+
+    def get_formatted_value(self):
+
+        #  fixme add sig figs please
+
+        if self.integers:
+            return str(self.value)
+
+        if self.value:
+            print('$$$$$$$$$$$$$$$$$$$$', ":3.2f".format(self.value))
+            # if self.sig_figs and self.decimal_places:
+            #     formatting = "{" + ":{}.{}f".format(self.sig_figs, self.decimal_places) + "}"
+            # elif self.sig_figs and not self.decimal_places:
+            #     formatting = "{" + ":{}.{}f".format(self.sig_figs, self.decimal_places) + "}"
+            # return formatting.format(self.value)
+            return "{:.{}f}".format(self.value, self.decimal_places)
+        else:
+            return ''
+
+    formatted_value = AliasProperty(get_formatted_value, bind=['value', 'decimal_places', 'sig_figs'])
 
     circle_label = ObjectProperty()
     display_value_toggle = BooleanProperty(False)
@@ -22,8 +46,6 @@ class CircleSlider(Slider, ConcentricCircles):
     update_slowdown = NumericProperty(0)
 
     selected = BooleanProperty(False)
-
-    integers = BooleanProperty(False)
 
     slider_bar = ObjectProperty()
     slider_bar_toggle = ObjectProperty(True)
@@ -36,7 +58,9 @@ class CircleSlider(Slider, ConcentricCircles):
         # self.master_colour = kwargs.pop('master_colour')
 
         self.circle_label = None
-        # self.slider_bar_toggle = kwargs.pop('slider_bar_toggle')
+        if 'slider_bar_toggle' in kwargs:
+            self.slider_bar_toggle = kwargs.pop('slider_bar_toggle')
+
         super(CircleSlider, self).__init__(**kwargs)
         # self.value = kwargs.pop('value')
         # self.sensitivity = kwargs.pop('sensitivity')
@@ -65,9 +89,7 @@ class CircleSlider(Slider, ConcentricCircles):
         print('DID ITT')
 
         self.font_size_hint = 0.5
-        value_text = str(int(self.value)) if self.display_value_toggle else ''
-
-        self.circle_label = CircleLabel(text=value_text, font_size_hint=self.font_size_hint,
+        self.circle_label = CircleLabel(text=self.formatted_value, font_size_hint=self.font_size_hint,
                                         text_colour=self.text_colour, bold=True, size=self.size, pos=self.pos,
                                         shape_dictionary=self.shape_dictionary, colour_scheme=self.colour_scheme,
                                         master_colour=self.master_colour)
@@ -76,17 +98,31 @@ class CircleSlider(Slider, ConcentricCircles):
               self.text_colour)
 
         self.add_widget(self.circle_label)
-        if self.display_value_toggle:
-            self.bind(value=self.set_cursor_text)
-            self.bind(text_colour=self.set_cursor_text_colour)
 
         self.bind(size=self.update_shape_list_size)
         self.bind(center=self.update_shape_list_pos)
         self.bind(value_pos=self.update_shape_list_pos)
 
+    def on_display_value_toggle(self, wid, bind_text_toggle):
+        self.bind_display_text()
+
+    def bind_display_text(self):
+
+        if not self.circle_label:
+            return
+
+        if self.display_value_toggle:
+            self.circle_label.text = self.formatted_value
+            self.bind(value=self.set_cursor_text)
+            self.bind(text_colour=self.set_cursor_text_colour)
+        else:
+            self.unbind(value=self.set_cursor_text)
+            self.unbind(text_colour=self.set_cursor_text_colour)
+            self.circle_label.text = ''
+
     def set_cursor_text(self, *args):
         #  fixme - could use some cursor text formatting. eg decimal places/sig fig
-        self.circle_label.text = str(int(self.value))
+        self.circle_label.text = self.formatted_value
 
     # def on_text_colour(self, wid, colour):
     #     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', colour)

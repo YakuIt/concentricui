@@ -12,9 +12,28 @@ class ConcentricFontScaling(Widget):
         super(ConcentricFontScaling, self).__init__(**kwargs)
 
         if self.font_size_hint:
-            self.bind(inner_size=Clock.schedule_once(self.set_font_size_from_hint, -1))
+            self.bind(size=Clock.schedule_once(self.set_font_size_from_hint, -1),
+                      font_size_hint=Clock.schedule_once(self.set_font_size_from_hint, -1))
+            # Clock.schedule_once(self.set_font_size_from_hint, 1)
         else:
-            self.bind(inner_size=Clock.schedule_once(self.set_font_size, -1))
+            self.bind(size=Clock.schedule_once(self.set_font_size, -1))
+            # Clock.schedule_once(self.set_font_size, 1)
+
+        self.bind(text=self.initially_set_font_size)
+
+    def initially_set_font_size(self, wid, text):
+
+        print('did ity intially. did this work??')
+
+        if not text:
+            return
+
+        if self.font_size_hint:
+            Clock.schedule_once(self.set_font_size_from_hint)
+        else:
+            Clock.schedule_once(self.set_font_size)
+
+        self.unbind(text=self.initially_set_font_size)
 
     def update(self, *args):
         raise Exception('This is set when subclassed!')
