@@ -12,6 +12,8 @@ from concentricui.oblong.oblongbutton import OblongButton
 
 
 class OblongSpinnerButton(OblongButton):
+    parent_spinner = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(OblongSpinnerButton, self).__init__(**kwargs)
 
@@ -25,7 +27,7 @@ class OblongSpinnerButton(OblongButton):
 from kivy.uix.dropdown import DropDown
 
 
-class OblongSpinner(ConcentricOblongs, Spinner):
+class OblongSpinner(Spinner, ConcentricOblongs):
     dropdown_cls = ObjectProperty(DropDown)
     option_cls = ObjectProperty(OblongSpinnerButton)
 
@@ -45,6 +47,7 @@ class OblongSpinner(ConcentricOblongs, Spinner):
             def __init__(cls, **kwargs):
 
                 cls.widget_walk_starting_point = self
+                cls.parent_spinner = self
 
                 # cls.shape_count = option_cls_kwargs['shape_count'] if 'shape_count' in option_cls_kwargs else self.shape_count
                 cls.shape_size_hint_list = option_cls_kwargs[
@@ -73,9 +76,12 @@ class OblongSpinner(ConcentricOblongs, Spinner):
     #     self.font_size = self.height*0.8
 
     # sync_height = True
-    text_autoupdate = True
+    # text_autoupdate = True
 
     def on_text(self, wid, text):
+
+        print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', text)
+
         if not self.content_pin:
             self.content_pin = self.text
         elif type(self.content_pin) is str:

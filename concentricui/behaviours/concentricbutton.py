@@ -34,10 +34,8 @@ class ConcentricButton(ButtonBehavior, ConcentricLabel):
 
         if self.state == 'down':
             self.show_trim = True
-            print('self.show_trim = True')
         else:
             self.show_trim = False
-            print('self.state = False')
 
         # super(ConcentricButton, self).on_state(*args)
 
