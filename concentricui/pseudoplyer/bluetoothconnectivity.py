@@ -21,45 +21,48 @@ class AndroidBluetoothConnectivity(object):
 
     def get_socket_stream_list(self):
         paired_devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices().toArray()
-        return paired_devices
+        address_name_list = [(device.getName(), device.getAddress()) for device in paired_devices]
+        return address_name_list
 
-    def set_socket_stream(self, name, unset=False):
+    def set_socket_stream(self, address, unset=False):
 
-        self.last_paired_device_name = name
-
-        paired_devices = self.get_socket_stream_list()
-
-        if not name:
+        if not address:
             self.recv_stream, self.send_stream = None, None
             print('Bluetooth connection removed')
             return
 
-        if not paired_devices:
-            raise Exception("socket stream list not retrieved. retrieve it with get_socket_scream_list()")
+        # if not paired_devices:
+        #     raise Exception("socket stream list not retrieved. retrieve it with get_socket_scream_list()")
+        #
+        # if name not in [device.getName() for device in paired_devices]:
+        #     print('paired_devices', [(type(x), x) for x in paired_devices], type(name), name)
+        #     raise Exception("No device with name {} found. \n Available devices: {}".format(name, paired_devices))
 
-        if name not in [device.getName() for device in paired_devices]:
-            print('paired_devices', [(type(x), x) for x in paired_devices], type(name), name)
-            raise Exception("No device with name {} found. \n Available devices: {}".format(name, paired_devices))
+        # if platform != 'android':
+        #     print('wotn go further as not android......')
+        #     return
 
-        if platform != 'android':
-            print('wotn go further as not android......')
-            return
+        # paired_devices = self.get_socket_stream_list()
 
-        socket = None
-        for device in paired_devices:
-            if device.getName() == name:
-                socket = device.createRfcommSocketToServiceRecord(
-                    UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-                recv_stream = socket.getInputStream()
-                send_stream = socket.getOutputStream()
-                break
+        # socket = None
+        # for device in paired_devices:
+        #     if device.getAddress() == address:
+        device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
+        socket = device.createRfcommSocketToServiceRecord(
+            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+        recv_stream = socket.getInputStream()
+        send_stream = socket.getOutputStream()
+        # break
 
-        if unset:
-            socket.close()
-            self.recv_stream, self.send_stream = None, None
-        else:
-            socket.connect()
-            self.recv_stream, self.send_stream = recv_stream, send_stream
+        #
+        # if unset:
+        #     socket.close()
+        #     self.recv_stream, self.send_stream = None, None
+        # else:
+        socket.connect()
+        self.recv_stream, self.send_stream = recv_stream, send_stream
+        self.last_paired_device_name = address
+
 
     def send_data(self, data):
 
@@ -100,18 +103,18 @@ class WindowsBluetoothConnectivity(object):
 
         return paired_devices
 
-    def set_socket_stream(self, name, unset=False):
+    def set_socket_stream(self, address, unset=False):
 
-        if not name:
+        if not address:
             if self.send_stream:
                 self.send_stream.close()
             self.recv_stream, self.send_stream = None, None
             print('Bluetooth connection removed')
             return
-        print('okok', name)
+        print('okok', address)
         socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         try:
-            socket.connect((name, 1))
+            socket.connect((address, 1))
         except OSError as e:
             print('excepted!!', e)
             socket.close()
