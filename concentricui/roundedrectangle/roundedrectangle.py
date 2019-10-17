@@ -40,12 +40,13 @@ class RoundedRec(RoundedRectangle):
         # factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
         return from_center_x, from_center_y
 
-    def get_inner_y_at_x(self, x):
+    def get_inner_y_at_x(self, x, allow_out_of_bounds=False):
 
         """ for now this will onlx work if all radii are the same"""
 
-        if abs(x) > self.size[0] / 2:
-            return None
+        if not allow_out_of_bounds:
+            if abs(x) > self.size[0] / 2:
+                return None
 
         radius = self.radius[0][1]
 
@@ -62,12 +63,13 @@ class RoundedRec(RoundedRectangle):
             corner = radius - sqrt(abs(corner_x ** 2 - abs(radius) ** 2))
             return vertical_without_corner - corner
 
-    def get_inner_x_at_y(self, y):
+    def get_inner_x_at_y(self, y, allow_out_of_bounds=False):
 
         """ for now this will only work if all radii are the same"""
 
-        if abs(y) > self.size[1] / 2:
-            return None
+        if not allow_out_of_bounds:
+            if abs(y) > self.size[1] / 2:
+                return None
 
         radius = self.radius[0][0]
 

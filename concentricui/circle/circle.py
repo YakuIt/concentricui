@@ -60,23 +60,24 @@ class Circle(Ellipse):
         from_center_pos = local_x - self.size[0] / 2, local_y - self.size[1] / 2
         return from_center_pos
 
-    def get_inner_x_at_y(self, y):
+    def get_inner_x_at_y(self, y, allow_out_of_bounds=False):
 
         radius = min(self.size) / 2
 
-        if abs(y) > radius:
-            return None
-        x = sqrt(abs(radius ** 2 - y ** 2))
+        if not allow_out_of_bounds:
+            if abs(y) > radius:
+                return None
 
+        x = sqrt(abs(radius ** 2 - y ** 2))
         return x
 
-    def get_inner_y_at_x(self, x):
+    def get_inner_y_at_x(self, x, allow_out_of_bounds=False):
 
         radius = min(self.size) / 2
 
-        if abs(x) > radius:
-            return None
+        if not allow_out_of_bounds:
+            if abs(x) > radius:
+                return None
 
         y = sqrt(abs(radius ** 2 - x ** 2))
-
         return y

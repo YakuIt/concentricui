@@ -302,7 +302,17 @@ class ConcentricShapes(ColourWidget):
 
     """ maybe not a great idea but for now i shall just make these functions work for any layer """
 
-    def get_inner_x_at_y(self, y, layer='inner', both_coordinates=False):
+    def get_inner_x_at_y(self, y, layer='inner', ratio=None, both_coordinates=False):
+
+        # if layer is not None and ratio is not None:
+        #     raise Exception("ratio is for providing a sort of throw away custom sized shape."
+        #                     " you cant specify a shape and a ratio!"
+        #                     " I suppose you should manually set layer to None in order to use ratio")
+
+        if ratio is None:
+            allow_out_of_bounds = False
+        else:
+            allow_out_of_bounds = True
 
         if not (type(layer) == int or layer in ('inner', 'outer')):
             raise Exception("layer must be int, or 'inner' or 'outer'. not {}".format(layer))
@@ -313,11 +323,16 @@ class ConcentricShapes(ColourWidget):
             layer = 0
 
         if not self.draw_shape_toggle:
+            # if ratio != None:
+            #     raise Exception("ratio was specified but draw shape toggle was off. what to do...")
             return self.x
 
         _, local_y = self.shape_list[layer].to_inner_center(0, y)
 
-        x_at_y = self.shape_list[layer].get_inner_x_at_y(local_y)
+        if ratio is not None:
+            local_y *= ratio
+
+        x_at_y = self.shape_list[layer].get_inner_x_at_y(local_y, allow_out_of_bounds=allow_out_of_bounds)
 
         if not both_coordinates:
             return x_at_y
@@ -327,7 +342,12 @@ class ConcentricShapes(ColourWidget):
             else:
                 return None, None
 
-    def get_inner_y_at_x(self, x, layer=-1, both_coordinates=False):
+    def get_inner_y_at_x(self, x, layer='inner', ratio=None, both_coordinates=False):
+
+        if ratio is None:
+            allow_out_of_bounds = False
+        else:
+            allow_out_of_bounds = True
 
         if not (type(layer) == int or layer in ('inner', 'outer')):
             raise Exception("layer must be int, or 'inner' or 'outer'. not {}".format(layer))
@@ -337,13 +357,15 @@ class ConcentricShapes(ColourWidget):
         elif layer == 'outer':
             layer = 0
 
-
         if not self.draw_shape_toggle:
             return self.y
 
         local_x, _ = self.shape_list[layer].to_inner_center(x, 0)
 
-        y_at_x = self.shape_list[layer].get_inner_y_at_x(local_x)
+        if ratio is not None:
+            y_at_x *= ratio
+
+        y_at_x = self.shape_list[layer].get_inner_y_at_x(local_x, allow_out_of_bounds=allow_out_of_bounds)
 
         if not both_coordinates:
             return y_at_x
@@ -414,20 +436,29 @@ class ConcentricShapes(ColourWidget):
 
         return width, height
 
-    def collide_point(self, x, y):
+    def collide_point(self, x, y, layer=None, ratio=None):
+
+        print(
+            '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
+            x, y, layer, ratio)
+
+
         '''
 
         Overwritten to actually reflect the shape!
 
         '''
 
+        if layer == None:
+            layer = self.collision_layer
+
         if not self.draw_shape_toggle:
             return super(ConcentricShapes, self).collide_point(x, y)
 
         local_x, local_y = self.shape_list[-1].to_inner_center(x, y)
 
-        inner_x, inner_right = self.get_inner_x_at_y(y, layer=self.collision_layer, both_coordinates=True)
-        inner_top, inner_y = self.get_inner_y_at_x(x, layer=self.collision_layer, both_coordinates=True)
+        inner_x, inner_right = self.get_inner_x_at_y(y, layer=layer, ratio=ratio, both_coordinates=True)
+        inner_top, inner_y = self.get_inner_y_at_x(x, layer=layer, ratio=ratio, both_coordinates=True)
 
         if not all((inner_x, inner_right, inner_y, inner_top)):
             return False

@@ -264,7 +264,7 @@ class Oblong(VertexInstruction):
         # factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
         return from_center_x, from_center_y
 
-    def get_inner_x_at_y(self, y):
+    def get_inner_x_at_y(self, y, allow_out_of_bounds=False):
 
         if self.orientation == 'horizontal':
             if abs(y) > self.rectangle_height / 2:
@@ -276,8 +276,9 @@ class Oblong(VertexInstruction):
             return self.rectangle_width / 2 + semicircle
         else:
 
-            if abs(y) > (self.rectangle_height + self.circle_diameters) / 2:
-                return None
+            if not allow_out_of_bounds:
+                if abs(y) > (self.rectangle_height + self.circle_diameters) / 2:
+                    return None
 
             radius = self.circle_diameters / 2
 
@@ -291,7 +292,7 @@ class Oblong(VertexInstruction):
                 semicircle = sqrt(abs(semicircle_y ** 2 - abs(radius) ** 2))
                 return semicircle
 
-    def get_inner_y_at_x(self, x):
+    def get_inner_y_at_x(self, x, allow_out_of_bounds=False):
 
         if self.orientation == 'horizontal':
 
@@ -313,8 +314,9 @@ class Oblong(VertexInstruction):
 
         else:
 
-            if abs(x) > self.rectangle_width / 2:
-                return None
+            if not allow_out_of_bounds:
+                if abs(x) > self.rectangle_width / 2:
+                    return None
 
             radius = self.circle_diameters / 2
             semicircle_x = abs(x)  # - self.rectangle_width / 2
