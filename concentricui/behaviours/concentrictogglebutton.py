@@ -11,3 +11,6 @@ class ConcentricToggleButton(ConcentricButton, ToggleButtonBehavior):
 
     def __init__(self, **kwargs):
         super(ConcentricButton, self).__init__(**kwargs)
+
+    def invert_state(self):
+        self.state = 'down' if self.state == 'normal' else 'normal'
