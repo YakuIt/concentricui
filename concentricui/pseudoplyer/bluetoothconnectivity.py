@@ -21,7 +21,7 @@ class AndroidBluetoothConnectivity(object):
 
     def get_socket_stream_list(self):
         paired_devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices().toArray()
-        address_name_list = [(device.getName(), device.getAddress()) for device in paired_devices]
+        address_name_list = [(device.getAddress(), device.getName()) for device in paired_devices]
         print('5555555555555555555555555555555555555555555', address_name_list)
         return address_name_list
 
