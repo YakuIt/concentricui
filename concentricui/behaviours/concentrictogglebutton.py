@@ -14,3 +14,9 @@ class ConcentricToggleButton(ConcentricButton, ToggleButtonBehavior):
 
     def invert_state(self):
         self.state = 'down' if self.state == 'normal' else 'normal'
+
+    def set_state_down(self):
+        self.state = 'down'
+
+    def set_state_normal(self):
+        self.state = 'normal'
