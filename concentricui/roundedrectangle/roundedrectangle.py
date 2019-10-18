@@ -40,49 +40,58 @@ class RoundedRec(RoundedRectangle):
         # factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
         return from_center_x, from_center_y
 
-    def get_inner_y_at_x(self, x, allow_out_of_bounds=False):
+    def get_inner_y_at_x(self, x, scale_bounds=False):
 
         """ for now this will onlx work if all radii are the same"""
 
-        if not allow_out_of_bounds:
-            if abs(x) > self.size[0] / 2:
-                return None
-
+        width, height = self.size
         radius = self.radius[0][1]
 
-        vertical_without_corner = self.size[1] / 2
+        if scale_bounds:
+            width *= scale_bounds
+            height *= scale_bounds
+            radius *= scale_bounds
 
-        if - self.size[0] / 2 + radius < x < self.size[0] / 2 - radius:
+        if abs(x) > width / 2:
+            return None
+
+        vertical_without_corner = height / 2
+
+        if - width / 2 + radius < x < width / 2 - radius:
             #  not in range of a corner, just in the central rectangle area
             return vertical_without_corner
         else:
 
             #  this statement is to actually remove the height of the corner
             #  think about it: at the very sides of the circles, you take off the entire radius
-            corner_x = abs(x) - self.size[0] / 2 + radius
+            corner_x = abs(x) - width / 2 + radius
             corner = radius - sqrt(abs(corner_x ** 2 - abs(radius) ** 2))
             return vertical_without_corner - corner
 
-    def get_inner_x_at_y(self, y, allow_out_of_bounds=False):
+    def get_inner_x_at_y(self, y, scale_bounds=False):
 
         """ for now this will only work if all radii are the same"""
 
-        if not allow_out_of_bounds:
-            if abs(y) > self.size[1] / 2:
-                return None
-
+        width, height = self.size
         radius = self.radius[0][0]
 
-        horizontal_without_corner = self.size[0] / 2
+        if scale_bounds:
+            width *= scale_bounds
+            height *= scale_bounds
+            radius *= scale_bounds
 
-        if - self.size[1] / 2 + radius < y < self.size[1] / 2 - radius:
+        if abs(y) > height / 2:
+            return None
+
+        horizontal_without_corner = width / 2
+
+        if - height / 2 + radius < y < height / 2 - radius:
             #  not in range of a corner, just in the central rectangle area
-
             return horizontal_without_corner
         else:
 
             #  this statement is to actually remove the width of the corner
             #  think about it: at the very bottom of the circles, you take off the entire radius from the width
-            corner_y = abs(y) - self.size[1] / 2 + radius
+            corner_y = abs(y) - height / 2 + radius
             corner = radius - sqrt(abs(corner_y ** 2 - abs(radius) ** 2))
             return horizontal_without_corner - corner

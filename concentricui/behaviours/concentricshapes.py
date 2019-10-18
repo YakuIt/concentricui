@@ -310,9 +310,9 @@ class ConcentricShapes(ColourWidget):
         #                     " I suppose you should manually set layer to None in order to use ratio")
 
         if ratio is None:
-            allow_out_of_bounds = False
+            scale_bounds = False
         else:
-            allow_out_of_bounds = True
+            scale_bounds = ratio
 
         if not (type(layer) == int or layer in ('inner', 'outer')):
             raise Exception("layer must be int, or 'inner' or 'outer'. not {}".format(layer))
@@ -329,10 +329,16 @@ class ConcentricShapes(ColourWidget):
 
         _, local_y = self.shape_list[layer].to_inner_center(0, y)
 
-        if ratio is not None:
-            local_y *= ratio
+        # if ratio is not None:
+        #     # print(local_y)
+        #     # local_y -= self.center_y
+        #     # print(local_y)
+        #     local_y *= ratio
+        #     # print(local_y)
+        #     # local_y += self.center_y
+        #     # print(local_y)
 
-        x_at_y = self.shape_list[layer].get_inner_x_at_y(local_y, allow_out_of_bounds=allow_out_of_bounds)
+        x_at_y = self.shape_list[layer].get_inner_x_at_y(local_y, scale_bounds=scale_bounds)
 
         if not both_coordinates:
             return x_at_y
@@ -345,9 +351,9 @@ class ConcentricShapes(ColourWidget):
     def get_inner_y_at_x(self, x, layer='inner', ratio=None, both_coordinates=False):
 
         if ratio is None:
-            allow_out_of_bounds = False
+            scale_bounds = False
         else:
-            allow_out_of_bounds = True
+            scale_bounds = ratio
 
         if not (type(layer) == int or layer in ('inner', 'outer')):
             raise Exception("layer must be int, or 'inner' or 'outer'. not {}".format(layer))
@@ -362,10 +368,12 @@ class ConcentricShapes(ColourWidget):
 
         local_x, _ = self.shape_list[layer].to_inner_center(x, 0)
 
-        if ratio is not None:
-            y_at_x *= ratio
-
-        y_at_x = self.shape_list[layer].get_inner_y_at_x(local_x, allow_out_of_bounds=allow_out_of_bounds)
+        # if ratio is not None:
+        #     #print('========================================')
+        #     #local_x -= self.center_x
+        #     local_x *= ratio
+        #     #local_x += self.center_x
+        y_at_x = self.shape_list[layer].get_inner_y_at_x(local_x, scale_bounds=scale_bounds)
 
         if not both_coordinates:
             return y_at_x
@@ -438,11 +446,6 @@ class ConcentricShapes(ColourWidget):
 
     def collide_point(self, x, y, layer=None, ratio=None):
 
-        print(
-            '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',
-            x, y, layer, ratio)
-
-
         '''
 
         Overwritten to actually reflect the shape!
@@ -457,8 +460,14 @@ class ConcentricShapes(ColourWidget):
 
         local_x, local_y = self.shape_list[-1].to_inner_center(x, y)
 
+
         inner_x, inner_right = self.get_inner_x_at_y(y, layer=layer, ratio=ratio, both_coordinates=True)
         inner_top, inner_y = self.get_inner_y_at_x(x, layer=layer, ratio=ratio, both_coordinates=True)
+
+        # print('===============================================')
+        # print(inner_x, local_x, inner_right)
+        # print(inner_top, local_y, inner_y)
+        # print('===============================================')
 
         if not all((inner_x, inner_right, inner_y, inner_top)):
             return False

@@ -264,61 +264,71 @@ class Oblong(VertexInstruction):
         # factor_in_rectangle = from_center_x + self.rectangle_width/2, from_center_y + self.rectangle_height
         return from_center_x, from_center_y
 
-    def get_inner_x_at_y(self, y, allow_out_of_bounds=False):
+    def get_inner_x_at_y(self, y, scale_bounds=False):
+
+        height = self.rectangle_height
+        width = self.rectangle_width
+        radius = self.circle_diameters / 2
+        if scale_bounds:
+            height *= scale_bounds
+            width *= scale_bounds
+            radius *= scale_bounds
 
         if self.orientation == 'horizontal':
-            if abs(y) > self.rectangle_height / 2:
+
+            if abs(y) > height / 2:
                 return None
 
-            radius = self.circle_diameters / 2
             semicircle_y = abs(y)  # - self.rectangle_height/2
             semicircle = sqrt(abs(semicircle_y ** 2 - abs(radius) ** 2))
-            return self.rectangle_width / 2 + semicircle
+            return width / 2 + semicircle
         else:
 
-            if not allow_out_of_bounds:
-                if abs(y) > (self.rectangle_height + self.circle_diameters) / 2:
-                    return None
+            if abs(y) > (height + radius * 2) / 2:
+                return None
 
-            radius = self.circle_diameters / 2
-
-            if abs(y) < self.rectangle_height / 2:
+            if abs(y) < height / 2:
                 #  not in range of a corner, just in the central rectangle area
-                return self.rectangle_width / 2
+                return width / 2
             else:
                 #  this statement is to actually remove the width of the corner
                 #  think about it: at the very sides of the circles, you take off the entire radius
-                semicircle_y = abs(y) - self.rectangle_height / 2
+                semicircle_y = abs(y) - height / 2
                 semicircle = sqrt(abs(semicircle_y ** 2 - abs(radius) ** 2))
                 return semicircle
 
-    def get_inner_y_at_x(self, x, allow_out_of_bounds=False):
+    def get_inner_y_at_x(self, x, scale_bounds=False):
+
+        height = self.rectangle_height
+        width = self.rectangle_width
+        radius = self.circle_diameters / 2
+        if scale_bounds:
+            height *= scale_bounds
+            width *= scale_bounds
+            radius *= scale_bounds
 
         if self.orientation == 'horizontal':
 
-            if abs(x) > (self.rectangle_width + self.circle_diameters) / 2:
+            if abs(x) > (width + radius * 2) / 2:
                 return None
 
-            radius = self.circle_diameters / 2
-
-            if abs(x) < self.rectangle_width / 2:
+            if abs(x) < width / 2:
                 #  not in range of a corner, just in the central rectangle area
-                return self.rectangle_height / 2
+                return height / 2
             else:
 
                 #  this statement is to actually remove the height of the corner
                 #  think about it: at the very sides of the circles, you take off the entire radius
-                semicircle_x = abs(x) - self.rectangle_width / 2
+                semicircle_x = abs(x) - width / 2
                 semicircle = sqrt(abs(semicircle_x ** 2 - abs(radius) ** 2))
                 return semicircle
 
         else:
 
-            if not allow_out_of_bounds:
-                if abs(x) > self.rectangle_width / 2:
+            if not scale_bounds:
+                if abs(x) > width / 2:
                     return None
 
-            radius = self.circle_diameters / 2
             semicircle_x = abs(x)  # - self.rectangle_width / 2
             semicircle = sqrt(abs(semicircle_x ** 2 - abs(radius) ** 2))
-            return self.rectangle_height / 2 + semicircle
+            return height / 2 + semicircle
