@@ -15,8 +15,8 @@ elif platform == 'win':
 class AndroidBluetoothConnectivity(object):
 
     def __init__(self):
-        """ last_paired_device_name is used for resetting connection """
-        self.last_paired_device_name = None
+        """ last_paired_device_address is used for resetting connection """
+        self.last_paired_device_address = None
         self.recv_stream, self.send_stream = None, None
 
     def get_socket_stream_list(self):
@@ -25,7 +25,7 @@ class AndroidBluetoothConnectivity(object):
         print('5555555555555555555555555555555555555555555', address_name_list)
         return address_name_list
 
-    def set_socket_stream(self, address, unset=False):
+    def set_socket_stream(self, address):
 
         if not address:
             self.recv_stream, self.send_stream = None, None
@@ -62,10 +62,12 @@ class AndroidBluetoothConnectivity(object):
         # else:
         socket.connect()
         self.recv_stream, self.send_stream = recv_stream, send_stream
-        self.last_paired_device_name = address
+        self.last_paired_device_address = address
 
 
     def send_data(self, data):
+
+        data = bytes(data)
 
         if self.send_stream:
             try:
@@ -73,7 +75,7 @@ class AndroidBluetoothConnectivity(object):
                 self.send_stream.flush()
             except:
                 try:
-                    self.set_socket_stream(name=self.last_paired_device_name)
+                    self.set_socket_stream(address=self.last_paired_device_address)
                     self.send_stream.write(data)
                     self.send_stream.flush()
                     print(':)')
@@ -94,8 +96,8 @@ class AndroidBluetoothConnectivity(object):
 class WindowsBluetoothConnectivity(object):
 
     def __init__(self):
-        """ last_paired_device_name is used for resetting connection """
-        self.last_paired_device_name = None
+        """ last_paired_device_address is used for resetting connection """
+        self.last_paired_device_address = None
         self.recv_stream, self.send_stream = None, None
 
     def get_socket_stream_list(self):
