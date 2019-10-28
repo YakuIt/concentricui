@@ -67,8 +67,6 @@ class AndroidBluetoothConnectivity(object):
 
     def send_data(self, data):
 
-        data = bytes(data)
-
         if self.send_stream:
             try:
                 self.send_stream.write(data)
