@@ -11,6 +11,7 @@ from concentricui.widgets.topbar import TopBar
 
 
 class ColourScreen(Screen, ColourWidget):
+    top_bar_size_hint = NumericProperty(0.04)
     top_bar_y = NumericProperty()
     screen_height = NumericProperty()
     screen_width = NumericProperty()
@@ -45,7 +46,7 @@ class ColourScreen(Screen, ColourWidget):
         self.bind(size=self.set_size, background_colour=self.set_background_colour)
 
     def set_size(self, wid, size):
-        self.top_bar.height = size[1] * 0.04
+        self.top_bar.height = size[1] * self.top_bar_size_hint
         # self.top_bar.size_hint_y = 0.04
         self.top_bar_y = self.top_bar.y
         self.top_bar.top = self.top

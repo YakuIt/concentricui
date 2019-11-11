@@ -22,6 +22,9 @@ class MasterColour(object):
     def set_master_colour(self, value):
         """ This function is 'continued' in concentricshapes """
 
+        if value == None:
+            return
+
         if all((True if type(x) == str else False for x in value)):
             colour_attribute_for_master_colour = ''.join(value)
         else:
