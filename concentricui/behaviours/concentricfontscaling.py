@@ -54,6 +54,15 @@ class ConcentricFontScaling(Widget):
         self.font_size = self.inner_height * self.font_size_hint
         self.update()
 
+    # def set_font_size(self, *args):
+    #
+    #     # Just get large texture:
+    #     l = Label(text=self.text)
+    #     l.font_size = '1000dp'  # something that'll give texture bigger than phone's screen size
+    #     l.texture_update()
+    #     # Set it to image, it'll be scaled to image size automatically:
+    #     self.texture = l.texture
+
     def set_font_size(self, *args):
 
         if not self.get_texture_size():
@@ -71,6 +80,9 @@ class ConcentricFontScaling(Widget):
             height_at_texture_start = self.inner_height
         if not width_at_texture_start:
             width_at_texture_start = self.inner_width
+
+        if not all(self.texture_size):
+            return
 
         width_scale = width_at_texture_start / self.texture_size[0]
 
