@@ -124,7 +124,6 @@ class SendReceive(Widget):
             def receive_replay_chunk(chunk_index, chunk):
                 #  this is (intended) for the windows device to receive
                 print('D {} / {} -> {}'.format(self.chunks_downloaded, self.chunks_total, chunk))
-                self.status_text = 'Downloading chunk {} out of {}'.format(self.chunks_downloaded, self.chunks_total)
                 self.calculate_download_ratio()
                 if chunk not in self.successfully_downloaded:
                     #  when there is an error sending a chunk i go back and send the previous chunk
@@ -143,6 +142,7 @@ class SendReceive(Widget):
                         self.osc.send_message(b'/next_chunk', [], self.other_ip, 8002, self.lan_sock, safer=True)
                 else:
                     self.reconstruct_replay_chunks()
+                self.status_text = 'Downloading chunk {} out of {}'.format(self.chunks_downloaded, self.chunks_total)
 
             #  client  #
             @self.osc.address(b'/next_chunk')
@@ -295,12 +295,12 @@ class SendReceive(Widget):
 
     def calculate_upload_ratio(self, *args):
         if self.chunks_total:
-            self.chunks_ratio = self.chunks_uploaded / (self.chunks_total - 1)
+            self.chunks_ratio = self.chunks_uploaded / self.chunks_total
         else:
             self.chunks_ratio = 0
 
     def calculate_download_ratio(self, *args):
         if self.chunks_total:
-            self.chunks_ratio = self.chunks_downloaded / (self.chunks_total - 1)
+            self.chunks_ratio = self.chunks_downloaded / self.chunks_total
         else:
             self.chunks_ratio = 0
