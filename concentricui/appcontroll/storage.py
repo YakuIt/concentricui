@@ -50,7 +50,7 @@ def get_store(store_name, subfolder=None, as_backup=False, from_backup=False):
     if as_backup is True:
         #  if as_backup is simply True, then try to get the store with the same name
         #  this is a little inefficient but who cares really
-        store = app.get_store(store_name, subfolder)
+        store = get_store(store_name, subfolder)
         return BackupDictStore(store_path, store)
     elif as_backup:
         #  if as_backup is specified then backup from the specified store
@@ -73,7 +73,7 @@ def get_store_with_backup(store_name,
         #  fixme except the specific error
         #  if it doesnt work it is most likely because the store was corrupt
         #  in this case set the store to be the backup store
-        store = get_store(store_name, subfolder, from_backup=True, as_backup=False)
-        backup_store = get_store(store_name, subfolder, from_backup=True, as_backup=store)
+        backup_store = get_store(store_name, subfolder, from_backup=True, as_backup=False)
+        store = get_store(store_name, subfolder, from_backup=False, as_backup=backup_store)
 
     return store, backup_store
