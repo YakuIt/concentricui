@@ -22,7 +22,7 @@ class Text(ColourWidget, Label):
         self.font_size = size[1] * self.font_ratio
 
     def set_colour(self, wid, colour):
-        self.color = colour
+        self.foreground_color = colour
         print('text update', wid, wid.text, colour)
 
 

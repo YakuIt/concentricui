@@ -48,9 +48,11 @@ class TopBar(TopBarShape):
         #  close and minimise buttons
         window_buttons_box = BoxLayout(orientation='horizontal')
         close_button = TextButton(text='x',
-                                  on_release=close_app)
+                                  on_release=close_app,
+                                  master_colour='text_colour')
         minimise_button = TextButton(text='-',
-                                     on_release=minimise_app)
+                                     on_release=minimise_app,
+                                     master_colour='text_colour')
         window_buttons_box.add_widget(close_button)
         window_buttons_box.add_widget(minimise_button)
 
