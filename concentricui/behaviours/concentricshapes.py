@@ -22,6 +22,7 @@ class ConcentricShapes(ColourWidget):
     outer_alpha_store = NumericProperty(allownone=True)
 
     collision_layer = ObjectProperty('inner')
+    collision_ratio = NumericProperty(1)
 
     def on_show_trim(self, wid, show_trim):
 
@@ -452,8 +453,11 @@ class ConcentricShapes(ColourWidget):
 
         '''
 
-        if layer == None:
+        if layer is None:
             layer = self.collision_layer
+
+        if ratio is None:
+            ratio = self.collision_ratio
 
         if not self.draw_shape_toggle:
             return super(ConcentricShapes, self).collide_point(x, y)
