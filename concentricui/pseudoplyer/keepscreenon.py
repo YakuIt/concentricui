@@ -22,12 +22,12 @@ class ScreenFlagSetter(object):
         if platform == 'android':
             self.android_clearflag()
 
-    if platform is 'android':
+    if platform == 'android':
         @run_on_ui_thread
         def android_setflag(self):
             PythonActivity.mActivity.getWindow().addFlags(Params.FLAG_KEEP_SCREEN_ON)
 
-    if platform is 'android':
+    if platform == 'android':
         @run_on_ui_thread
         def android_clearflag(self):
             PythonActivity.mActivity.getWindow().clearFlags(Params.FLAG_KEEP_SCREEN_ON)
