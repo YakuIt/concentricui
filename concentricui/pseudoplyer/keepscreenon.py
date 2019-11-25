@@ -1,6 +1,6 @@
 from kivy.utils import platform
 
-if platform is 'android':
+if platform == 'android':
     from jnius import autoclass
 
     PythonActivity = autoclass('org.kivy.android.PythonActivity')
@@ -15,11 +15,11 @@ class ScreenFlagSetter(object):
         pass
 
     def set_screen_on_flag(self, *args):
-        if platform is 'android':
+        if platform == 'android':
             self.android_setflag()
 
     def clear_screen_on_flag(self, *args):
-        if platform is 'android':
+        if platform == 'android':
             self.android_clearflag()
 
     if platform is 'android':
