@@ -19,7 +19,7 @@ if platform == 'android':
     BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
     BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
     BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
-    ioException = autoclass('java.io.IOException')
+    IOException = autoclass('java.io.IOException')
     UUID = autoclass('java.util.UUID')
 elif platform == 'win':
     pass
