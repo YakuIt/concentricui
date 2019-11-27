@@ -19,7 +19,6 @@ if platform == 'android':
     BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
     BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
     BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
-    InputStream = autoclass('java.io.InputStream')
     UUID = autoclass('java.util.UUID')
 elif platform == 'win':
     pass
@@ -44,13 +43,12 @@ class AndroidBluetoothConnectivity(object):
         device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
         socket = device.createRfcommSocketToServiceRecord(
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-        recv_stream = InputStream(socket.getInputStream())
+        recv_stream = socket.getInputStream()
         send_stream = socket.getOutputStream()
 
         socket.connect()
         self.recv_stream, self.send_stream = recv_stream, send_stream
         self.last_paired_device_address = address
-
 
     def send_data(self, data):
 
@@ -85,8 +83,8 @@ class AndroidBluetoothConnectivity(object):
             if self.recv_stream.available():
                 try:
                     data = self.recv_stream.readLine()
-                except self.IOException as e:
-                    print("IOException: ", e.message)
+                except Exception as e:
+                    print(">>>>>>>>>>>>>>>>>>", e)
                 # except jnius.JavaException as e:
                 #     print ("JavaException: ", e.message)
                 # except:
