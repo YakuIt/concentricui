@@ -19,6 +19,7 @@ if platform == 'android':
     BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
     BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
     BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
+    InputStream = autoclass('java.io.InputStream')
     UUID = autoclass('java.util.UUID')
 elif platform == 'win':
     pass
@@ -26,28 +27,6 @@ elif platform == 'win':
 
 
 class AndroidBluetoothConnectivity(object):
-
-    def __init__(self):
-        """ last_paired_device_address is used for resetting connection """
-        self.last_paired_device_address = None
-        self.recv_stream, self.send_stream = None, None
-
-        global RECEIVE_THREAD_RUNNING
-        RECEIVE_THREAD_RUNNING = None
-
-    def connect(self, address=None):
-        if address:
-            self.set_socket_stream(address)
-            self.receive_data()
-        else:
-            self.disconnect()
-
-    def disconnect(self):
-        global RECEIVE_THREAD_RUNNING
-        RECEIVE_THREAD_RUNNING = False
-
-        self.set_socket_stream(None)
-
 
     def get_socket_stream_list(self):
         paired_devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices().toArray()
@@ -62,34 +41,12 @@ class AndroidBluetoothConnectivity(object):
             print('Bluetooth connection removed')
             return
 
-        # if not paired_devices:
-        #     raise Exception("socket stream list not retrieved. retrieve it with get_socket_scream_list()")
-        #
-        # if name not in [device.getName() for device in paired_devices]:
-        #     print('paired_devices', [(type(x), x) for x in paired_devices], type(name), name)
-        #     raise Exception("No device with name {} found. \n Available devices: {}".format(name, paired_devices))
-
-        # if platform != 'android':
-        #     print('wotn go further as not android......')
-        #     return
-
-        # paired_devices = self.get_socket_stream_list()
-
-        # socket = None
-        # for device in paired_devices:
-        #     if device.getAddress() == address:
         device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
         socket = device.createRfcommSocketToServiceRecord(
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-        recv_stream = socket.getInputStream()
+        recv_stream = InputStream(socket.getInputStream())
         send_stream = socket.getOutputStream()
-        # break
 
-        #
-        # if unset:
-        #     socket.close()
-        #     self.recv_stream, self.send_stream = None, None
-        # else:
         socket.connect()
         self.recv_stream, self.send_stream = recv_stream, send_stream
         self.last_paired_device_address = address
@@ -125,7 +82,7 @@ class AndroidBluetoothConnectivity(object):
         while True:
             if not RECEIVE_THREAD_RUNNING:
                 break
-            if self.recv_stream.ready():
+            if self.recv_stream.available():
                 try:
                     data = self.recv_stream.readLine()
                 except self.IOException as e:
@@ -139,34 +96,8 @@ class AndroidBluetoothConnectivity(object):
     def do_on_data(self, data):
         print('ANDROID RECEIVED:', data)
 
-    def reset(self):
-
-        pattern_string = '0'
-        if self.send_stream:
-            self.send_stream.write('{}\n'.format(pattern_string))
-            self.send_stream.flush()
-
 
 class WindowsBluetoothConnectivity(object):
-
-    def __init__(self):
-        """ last_paired_device_address is used for resetting connection """
-        self.last_paired_device_address = None
-        self.recv_stream, self.send_stream = None, None
-
-    def connect(self, address=None):
-        if address:
-            self.set_socket_stream(address)
-            self.receive_data()
-        else:
-            self.disconnect()
-
-    def disconnect(self):
-        global RECEIVE_THREAD_RUNNING
-        RECEIVE_THREAD_RUNNING = False
-
-        self.set_socket_stream(None)
-
 
     def get_socket_stream_list(self):
 
@@ -199,11 +130,6 @@ class WindowsBluetoothConnectivity(object):
         else:
             Warning("No send stream set up. {} not sent".format(data))
 
-    def reset(self):
-        pattern_string = '0'
-        if self.send_stream:
-            self.send_stream.write('{}\n'.format(pattern_string))
-            self.send_stream.flush()
 
 
 if platform == 'android':
@@ -213,4 +139,30 @@ elif platform == 'win':
 
 
 class BluetoothConnectivity(device_connectivity):
-    pass
+
+    def __init__(self):
+        """ last_paired_device_address is used for resetting connection """
+        self.last_paired_device_address = None
+        self.recv_stream, self.send_stream = None, None
+
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = None
+
+    def connect(self, address=None):
+        if address:
+            self.set_socket_stream(address)
+            self.receive_data()
+        else:
+            self.disconnect()
+
+    def disconnect(self):
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = False
+
+        self.set_socket_stream(None)
+
+    def reset(self):
+        pattern_string = '0'
+        if self.send_stream:
+            self.send_stream.write('{}\n'.format(pattern_string))
+            self.send_stream.flush()
