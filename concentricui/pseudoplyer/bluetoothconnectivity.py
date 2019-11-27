@@ -14,11 +14,12 @@ def run_in_thread(fn):
     return run
 
 if platform == 'android':
-    from jnius import autoclass
+    from jnius import autoclass, JavaException
 
     BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
     BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
     BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
+    ioException = autoclass('java.io.IOException')
     UUID = autoclass('java.util.UUID')
 elif platform == 'win':
     pass
@@ -83,13 +84,13 @@ class AndroidBluetoothConnectivity(object):
             if self.recv_stream.available():
                 try:
                     data = self.recv_stream.readLine()
-                except Exception as e:
-                    print(">>>>>>>>>>>>>>>>>>", e)
-                # except jnius.JavaException as e:
-                #     print ("JavaException: ", e.message)
-                # except:
-                #     print("Misc error: ", sys.exc_info()[0])
-                self.do_on_data(data)
+                    self.do_on_data(data)
+                except IOException as e:
+                    print("IOException: ", e.message)
+                except JavaException as e:
+                    print("JavaException: ", e.message)
+                except:
+                    print("Misc error ... ")
 
     def do_on_data(self, data):
         print('ANDROID RECEIVED:', data)
