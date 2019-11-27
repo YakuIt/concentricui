@@ -71,17 +71,21 @@ class AndroidBluetoothConnectivity(object):
             try:
                 self.send_stream.write(data)
                 self.send_stream.flush()
+                return True
             except:
                 try:
                     self.set_socket_stream(address=self.last_paired_device_address)
                     self.send_stream.write(data)
                     self.send_stream.flush()
                     print(':)')
+                    return True
                 except Exception as e:
                     print(':(', e)
+                    return False
 
         else:
             Warning("No send stream set up. {} not sent".format(data))
+            return False
 
     def reset(self):
 
