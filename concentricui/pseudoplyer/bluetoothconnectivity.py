@@ -1,4 +1,17 @@
+from threading import Thread
+
 from kivy import platform
+
+
+#  https://stackoverflow.com/questions/14234547/threads-with-decorators
+def run_in_thread(fn):
+    def run(*args, **kwargs):
+        t = Thread(target=fn, args=args, kwargs=kwargs)
+        t.daemon = True
+        t.start()
+        return t  # <-- this is new!
+
+    return run
 
 if platform == 'android':
     from jnius import autoclass
@@ -18,6 +31,23 @@ class AndroidBluetoothConnectivity(object):
         """ last_paired_device_address is used for resetting connection """
         self.last_paired_device_address = None
         self.recv_stream, self.send_stream = None, None
+
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = None
+
+    def connect(self, address=None):
+        if address:
+            self.set_socket_stream(address)
+            self.receive_data()
+        else:
+            self.disconnect()
+
+    def disconnect(self):
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = False
+
+        self.set_socket_stream(None)
+
 
     def get_socket_stream_list(self):
         paired_devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices().toArray()
@@ -87,6 +117,28 @@ class AndroidBluetoothConnectivity(object):
             Warning("No send stream set up. {} not sent".format(data))
             return False
 
+    #  https://stackoverflow.com/questions/29719898/how-to-convert-android-bluetooth-socket-inputstream-to-python-string-in-kivy
+    @run_in_thread
+    def receive_data(self):
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = True
+        while True:
+            if not RECEIVE_THREAD_RUNNING:
+                break
+            if self.recv_stream.ready():
+                try:
+                    data = self.recv_stream.readLine()
+                except self.IOException as e:
+                    print("IOException: ", e.message)
+                # except jnius.JavaException as e:
+                #     print ("JavaException: ", e.message)
+                # except:
+                #     print("Misc error: ", sys.exc_info()[0])
+                self.do_on_data(data)
+
+    def do_on_data(self, data):
+        print('ANDROID RECEIVED:', data)
+
     def reset(self):
 
         pattern_string = '0'
@@ -101,6 +153,20 @@ class WindowsBluetoothConnectivity(object):
         """ last_paired_device_address is used for resetting connection """
         self.last_paired_device_address = None
         self.recv_stream, self.send_stream = None, None
+
+    def connect(self, address=None):
+        if address:
+            self.set_socket_stream(address)
+            self.receive_data()
+        else:
+            self.disconnect()
+
+    def disconnect(self):
+        global RECEIVE_THREAD_RUNNING
+        RECEIVE_THREAD_RUNNING = False
+
+        self.set_socket_stream(None)
+
 
     def get_socket_stream_list(self):
 
