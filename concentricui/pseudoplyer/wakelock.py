@@ -43,9 +43,15 @@ class WakeLock(object):
     if platform == 'android':
         @run_on_ui_thread
         def android_setflag(self):
-            PythonActivity.mActivity.getWindow().addFlags(Params.FLAG_KEEP_SCREEN_ON)
+            try:
+                PythonActivity.mActivity.getWindow().addFlags(Params.FLAG_KEEP_SCREEN_ON)
+            except Exception as e:
+                print('COULD NOT SET WAKE LOCK ON: ', e)
 
     if platform == 'android':
         @run_on_ui_thread
         def android_clearflag(self):
-            PythonActivity.mActivity.getWindow().clearFlags(Params.FLAG_KEEP_SCREEN_ON)
+            try:
+                PythonActivity.mActivity.getWindow().clearFlags(Params.FLAG_KEEP_SCREEN_ON)
+            except Exception as e:
+                print('COULD NOT SET WAKE LOCK OFF:', e)

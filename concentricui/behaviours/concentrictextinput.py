@@ -89,7 +89,7 @@ class ConcentricTextInput(ConcentricShapes, TextInput):
 
         self.font_size = self.inner_height
 
-        self.padding_y = (self.font_size - self.height) / 2 + self.font_size
+        self.padding_y = (self.font_size - self.height) / 2 + self.font_size / 2
         self.padding_y = 0
 
         self.oblong_cursor.set_size((self.cursor_width, self.font_size))
