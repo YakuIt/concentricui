@@ -9,16 +9,34 @@ if platform == 'android':
     from android.runnable import run_on_ui_thread
 
 
-class ScreenFlagSetter(object):
+class WakeLock(object):
 
     def __init__(self):
-        pass
+        self._wake_lock = False
 
-    def set_screen_on_flag(self, *args):
+    #  fixme really you want a property that can be True or False, and the bellow functions are your setters
+
+    @property
+    def wake_lock(self):
+        return self._wake_lock
+
+    @wake_lock.setter
+    def wake_lock(self, state):
+        if self._wake_lock != state:
+            #  if the state has changed
+            self._wake_lock = state
+            #  update the property
+            #  and set the flag
+            if state:
+                self.set_wake_lock_flag()
+            else:
+                self.clear_wake_lock_flag()
+
+    def set_wake_lock_flag(self, *args):
         if platform == 'android':
             self.android_setflag()
 
-    def clear_screen_on_flag(self, *args):
+    def clear_wake_lock_flag(self, *args):
         if platform == 'android':
             self.android_clearflag()
 
