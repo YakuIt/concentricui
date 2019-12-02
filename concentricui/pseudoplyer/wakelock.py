@@ -14,6 +14,8 @@ class WakeLock(object):
     def __init__(self):
         self._wake_lock = False
 
+        autoclass('org.jnius.NativeInvocationHandler')
+
     #  fixme really you want a property that can be True or False, and the bellow functions are your setters
 
     @property
