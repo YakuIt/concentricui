@@ -98,6 +98,8 @@ class ConcentricShapes(ColourWidget):
 
     def __init__(self, **kwargs):
 
+        self.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
+
         # if 'anchor_x' in kwargs:
         #     kwargs.pop('anchor_x')
         # if 'left' in kwargs:

@@ -55,14 +55,12 @@ def get_store(store_name, subfolder=None, as_backup=False, from_backup=False):
     elif as_backup:
         #  if as_backup is specified then backup from the specified store
         return BackupDictStore(store_path, as_backup)
-    else:
-        #  if not as backup...., just open a normal store
+    else:  # if not as backup...., just open a normal store
         return DictStore(store_path)
 
 
-def get_store_with_backup(store_name,
-                          subfolder=None):  # this wont get it again if it changed... but why would it ever change
-
+def get_store_with_backup(store_name, subfolder=None):
+    # this wont get it again if it changed... but why would it ever change
     try:
         #  this is if it works:
         #  get the store, and back it up as the backup store

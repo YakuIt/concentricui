@@ -24,7 +24,7 @@ class CircleSlider(Slider, ConcentricCircles):
         #  fixme add sig figs please
 
         if self.integers:
-            return str(self.value)
+            return str(int(self.value))
 
         if self.value:
             print('$$$$$$$$$$$$$$$$$$$$', ":3.2f".format(self.value))
@@ -102,6 +102,8 @@ class CircleSlider(Slider, ConcentricCircles):
         self.bind(size=self.update_shape_list_size)
         self.bind(center=self.update_shape_list_pos)
         self.bind(value_pos=self.update_shape_list_pos)
+
+        self.bind_display_text()
 
     def on_display_value_toggle(self, wid, bind_text_toggle):
         self.bind_display_text()

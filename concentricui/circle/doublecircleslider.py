@@ -2,6 +2,7 @@
 
 all__ = ('DoubleCircleSlider',)
 
+from kivy.clock import Clock
 from kivy.properties import BooleanProperty, NumericProperty, ObjectProperty, ReferenceListProperty
 
 from concentricui.behaviours.concentricshapes import ConcentricShapes
@@ -39,6 +40,11 @@ class DoubleCircleSlider(ConcentricShapes):
     values = ReferenceListProperty(min_value, max_value)
 
     closer_widget = ObjectProperty(None, allownone=True)
+
+    def on_display_value_toggle(self, wid, bind_text_toggle):
+        if self.min_slider and self.max_slider:
+            self.min_slider.display_value_toggle = bind_text_toggle
+            self.max_value.display_value_toggle = bind_text_toggle
 
     def draw_shape(self, **kwargs):
         return
@@ -114,10 +120,11 @@ class DoubleCircleSlider(ConcentricShapes):
                                                 master_colour=self.master_colour, colour_scheme=self.colour_scheme,
                                                 allow_concentric=False)
             self.add_widget(self.slider_bar)
+
             self.bind(size=self.set_slider_bar_size_and_pos)
             self.bind(pos=self.set_slider_bar_size_and_pos)
 
-            # self.bind(master_colour=self.set_slider_bar_colour)
+        # self.bind(master_colour=self.set_slider_bar_colour)
 
         self.min_slider = CircleSlider(**min_kwargs)
         self.max_slider = CircleSlider(**max_kwargs)
@@ -146,6 +153,9 @@ class DoubleCircleSlider(ConcentricShapes):
             self.max_slider.pass_master_colour_to_children(wid, colour)
 
     def set_slider_bar_size_and_pos(self, *args):
+        Clock.schedule_once(self.do_set_slider_bar_size_and_pos, -1)
+
+    def do_set_slider_bar_size_and_pos(self, *args):
         if self.slider_bar:
             self.slider_bar.size = (self.width - self.min_slider.circle_label.get_inner_shape_width(),
                                     self.height / 10) if self.orientation == 'horizontal' else (
@@ -157,6 +167,10 @@ class DoubleCircleSlider(ConcentricShapes):
 
         self.min_slider.center = self.center
         self.max_slider.center = self.center
+
+    # def on_slider_bar(self):
+    #     self.set_slider_bar_size_and_pos()
+    #     #self.set_slider_bar_colour()
 
     def set_cursor_text_colour(self, *args):
         print('om setting this')

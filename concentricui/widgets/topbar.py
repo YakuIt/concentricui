@@ -16,6 +16,8 @@ class TopBarShape(ConcentricOblongs):
         self.rectangle_colour_instruction = None
         super(TopBarShape, self).__init__(**kwargs)
 
+        self.pos_hint = {}
+
         with self.canvas:
             self.rectangle_colour_instruction = Color(*self.trim_colour)
             self.rectangle = Rectangle()

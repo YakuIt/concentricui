@@ -6,6 +6,7 @@ if platform == 'android':
     PythonActivity = autoclass('org.kivy.android.PythonActivity')
     View = autoclass('android.view.View')
     Params = autoclass('android.view.WindowManager$LayoutParams')
+    autoclass('org.jnius.NativeInvocationHandler')
     from android.runnable import run_on_ui_thread
 
 
@@ -13,8 +14,6 @@ class WakeLock(object):
 
     def __init__(self):
         self._wake_lock = False
-
-        autoclass('org.jnius.NativeInvocationHandler')
 
     #  fixme really you want a property that can be True or False, and the bellow functions are your setters
 
